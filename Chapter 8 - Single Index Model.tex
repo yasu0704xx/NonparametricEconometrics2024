@@ -731,6 +731,19 @@
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Hristache, Juditsky and Spokoiny（補足）}
+\begin{itemize}
+  \item アイデア自体は単純：
+  \item $x$が$\beta$と直交する方向に動いても
+        $x^T\beta$の変動はゼロである．一方で，
+        $x$が$\beta$と同じ方向に動けば,推定のために用いる情報として有益
+        である．そこで，そのような方向の$x$の変動のみをとってきて，
+        1次元の話を考えるとよいのでは？
+  \item 「捨てる」ような$x$の変動に対しては，バンド幅を大きくとってやる．
+        すると，その分の収束スピードがはやくなって，「次元の呪い」はクリアできるはず．
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Estimation of $g(\cdot)$}
 \begin{itemize}
   \item Let $\beta_n$ denote a $\sqrt{n}$-consistent estimator of $\beta$, or $\delta$.
@@ -744,13 +757,26 @@
   \item Recall that $\beta_n$ is a $\sqrt{n}$-consistent estimator of $\beta$, that is,
         $\beta_n - \beta_0 = Op(n^{-\frac{1}{2}})$, 
   \item This converges to zero faster than standard nonparametric estimators.
-  \item Then, the asymptotic distribution of $\hat{g}(x^T\beta_0)$ is the same as that of $\hat{g}(x^T\beta_n)$.
+  \item Then, the asymptotic distribution of $\hat{g}(x^T\beta_n)$ is the same as that of $\hat{g}(x^T\beta_0)$.
   \item Thus, we obtain \textbf{Corollary 8.1}:
         \begin{align*}
           \sqrt{nh} [\hat{g}(x^T\beta_n) - g(x^T\beta_0) - h^2 B(x^\beta_0)] 
           \darrow 
           \text{Normal}\left( 0, \frac{\kappa \sigma^2(x^T\beta_0)}{f(x^T\beta_0)} \right).
         \end{align*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Estimation of $g(\cdot)$（補足）}
+\begin{itemize}
+  \item $\hat{g}(x^T\beta_n)$の漸近分布が，$\hat{g}(x^T\beta_0)$の漸近分布と一致するという話について：
+  \item いま考えている
+        $\hat{g}(x^T\beta_n)$
+        というのは，generated regressorと呼ばれるものである．
+  \item 一般に，generated regressorを用いて推定する場合，
+        漸近分散を修正する必要がある．
+  \item しかし，今のケースにおいては，$\hat{g}(x^T\beta_n)$の推定誤差がじゅうぶん大きいため，
+        ラッキーなことに，そのような修正の必要がない．
 \end{itemize}
 \end{frame}
 
@@ -770,7 +796,9 @@
 \begin{itemize}
   \item Nonparametric estimation in the 1st stage may suffer from the curse of dimensionality.
   \item In small-sample settings, the iterative method of Ichimura (1993) may be more appealing 
-        as it avoids having to conduct high-dimensional nonparametric estimation.
+        as it avoids having to conduct high-dimensional nonparametric estimation
+        \footnote{あくまで，may beの話．}
+        .
 \end{itemize}
 \end{frame}
 
@@ -861,13 +889,18 @@
   \begin{minipage}{0.49\textwidth}  % [t]を指定して上揃え
     \begin{tcolorbox}[colframe=red!50!white, colback=red!10!white, title=HHI (1993)]
         \begin{itemize}
-            \item A higher order kernel is needed.
+            \item A higher order kernel is needed
+                  \footnote{少なくとも4次．}
+                  .
             \item $h = O(n^{-\frac{1}{5}})$.
             \item $Y$ has moments of any order.
         \end{itemize}
     \end{tcolorbox}
   \end{minipage} 
-  
+  \begin{itemize}
+    \item 左の仮定は識別のための仮定．
+          右の仮定は漸近分布を考えるために導入したより強い仮定．
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Bandwidth Selection for Average Derivative Estimator}
@@ -896,7 +929,7 @@
         \begin{align*}
           \hat{h} = \arg\min_{h} \sum_{i=1}^{n} [Y_i - \hat{g}_{-i}(X_i^T\beta_n, h)]^2.
         \end{align*}
-  \item Under some regularity conditions, the selection of $h$ is of order $O(n^{-\frac{1}{5}})$.
+  \item Under some regularity conditions, the selection of $h$ is of order $Op(n^{-\frac{1}{5}})$.
 \end{itemize}
 \end{frame}
 
@@ -940,9 +973,9 @@
         We would estimate $\beta$ by maximum likelihood methods.
         The likelihood function would be 
         \begin{align*}
-          L^{\star}(b) &= \P(\epsilon > -X_i^Tb - \alpha)^{\sum_{i=1}^n Y_i}\\
-                       &\times 
-                        \P(\epsilon \leq -X_i^Tb  -\alpha)^{\sum_{i=1}^n (1-Y_i)} \\
+          L^{\star}(b) &= \P(\epsilon_i > -X_i^Tb - \alpha)^{\sum_{i=1}^n Y_i}\\
+                       &\quad \times 
+                        \P(\epsilon_i \leq -X_i^Tb  -\alpha)^{\sum_{i=1}^n (1-Y_i)} \\
                        &= g(X_i^Tb)^{\sum_{i=1}^n Y_i} \times \{1-g(X_i^Tb)\}^{\sum_{i=1}^n (1-Y_i)},
         \end{align*}
         and then the log-likelihood function would be
@@ -971,7 +1004,7 @@
 
 \begin{frame}{Asymptotic Properties of Klein and Spady's Estimator}
 \begin{itemize}
-  \item The following asymptotic properties hold 
+  \item The following asymptotic properties hold: 
         \begin{itemize}
           \item under some regularity conditions, and
           \item assuming that the kernel $k$ is of higher-order (must be of fourth-order).
@@ -993,11 +1026,6 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-  
-\end{frame}
-
-
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1005,39 +1033,165 @@
 \section{Lewbel's (2000) Estimator}
   
   
+\begin{frame}{Lewbel's (2000) Estimator}
+\begin{itemize}
+  \item Consider the following binary choice model:
+        \begin{align*}
+          Y_i = 1(v_i + X_i^T\beta + \epsilon_i > 0),
+        \end{align*}
+        where $v_i$ is 
+        \alert{a (special) continuous regressor whose coefficient is normalized to be one}
+        and $X_i$ is of dimension $q$.  
+  \item Let $f(v|x)$ denote the conditional PDF of 
+        $v_i$ given $X_i$.
+  \item Let $F_{\epsilon}(\epsilon\mid v, x)$ denote the conditional CDF of 
+        $\epsilon_i$ conditioned on $(v_i, X_i)$.
   
+\end{itemize}
+\end{frame}  
   
+\begin{frame}{Lewbel's (2000) Estimator}
+  \begin{itemize}
+    \item \alert{Assumption}: 
+          Assume that $F_{\epsilon}(\epsilon\mid v, x) = F_{\epsilon}(\epsilon\mid x)$.
+    \item In words, here we assume that, conditional on $x$, 
+          $\epsilon$ is independent of the special regressor $v$.
+    \item We also introduce an orthogonality condition: $\E(X_i\epsilon_i)=0$.
+    \item \alert{Identification}:
+          \begin{align*}
+            \beta = \E[X_i X_i^T]^{-1} \E[X_i \tilde{Y}_i], 
+            \text{ where } \tilde{Y}_i = \dfrac{Y_i - 1(v_i > 0)}{f(v_i \mid X_i)}. 
+          \end{align*}
+    \item \alert{Estimation}: 
+          Use the sample analogue of identification result, 
+          replacing the unkown quantity $f(v_i \mid X_i)$ 
+          with its nonparametric kernel estimator
+          \footnote{ということは，random denominator problemが生じる？}
+          .
+  \end{itemize}
+\end{frame}  
   
+\begin{frame}{Lewbel's (2000) Estimator: \alert{EXTENSION 1}}
+  \begin{itemize}
+    \item \alert{Assumption}: 
+          There exists a $p \times 1$ vector $Z_i$ of IVs,
+          which satisfies that 
+          $\E(Z_i\epsilon_i)=0$, 
+          $\E(Z_iX_i^T)$ is non-singular, and
+          $F_{\epsilon x}(\epsilon,x \mid v,z) = F_{\epsilon x}(\epsilon,x \mid z)$. 
+    \item We do not assume the orthogonality condition here.
+    \item \alert{Identification}
+          \footnote{この形で識別しているということは，丁度識別のケースのみを考えている？}
+          :
+          \begin{align*}
+            \beta = \E[Z_i X_i^T]^{-1} \E[Z_i \tilde{Y}_i], 
+            \text{ where } \tilde{Y}_i = \dfrac{Y_i - 1(v_i > 0)}{f(v_i \mid X_i)}. 
+          \end{align*}
+    \item \alert{Estimation}: 
+          Use the sample analogue of identification result, 
+          replacing the unkown quantity $f(v_i \mid X_i)$ 
+          with its nonparametric kernel estimator
+          \footnote{ここでもやはり，random denominator problemが生じる？}
+          .
+  \end{itemize}
+\end{frame}  
   
+\begin{frame}{Lewbel's (2000) Estimator: \alert{EXTENSION 2}}
+\begin{itemize}
+  \item Consider \alert{the ordered response model} defined as
+        \begin{align*}
+          Y_i = \sum_{j=0}^{J-1} \alert{j}
+                1(a_j < v_i + X_i^T \beta + \epsilon_i < a_{j+1}),
+        \end{align*}
+        where $a_0 = - \infty$ and $a_J = + \infty$.
+  \item $Y_j$ is called \alert{the response variable}, 
+        which takes values in the set $\{0, 1, \cdots, J-1\}$.
+  \item $Y_i = j$ if 
+        \begin{align*}
+          a_j < v_i + X_i^T \beta + \epsilon_i < a_{j+1}.
+        \end{align*}
+  \item Let $X_{1i} = 1$ be the intercept and $\beta_1 = 0$
+        \footnote{対応する係数がゼロでないと，インデックスモデルの識別条件に反する．}
+        .
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Lewbel's (2000) Estimator: \alert{EXTENSION 2}}
+  \begin{itemize}
+    \item Set $Y_{ji} = 1(Y_i \geq j)$ for $j = 1, \cdots, J-1$.
+    \item Define $\Delta = \E[X_iX_i^T]^{-1}$ 
+          and $\Delta_j$ as the $j$th row of $\Delta$.
+    \item \alert{Identification}:
+          \begin{align*}
+            a_j &= - \Delta_1 
+                    \E\left[
+                      X_i
+                      \frac{Y_{ji} - 1(v_i > 0)}{f(v_i|X_i)}
+                    \right],
+                    \text{ for } j = 1, \cdots, J-1; \text{ and } \\
+            b_l &= - \Delta_j
+                    \E\left[
+                      X_i
+                      \dfrac{
+                      \frac{\sum_{j=1}^{J-1} Y_{ji}}{(J-1)}- 1(v_i > 0)}
+                      {f(v_i|X_i)}
+                    \right],
+                    \text{ for } l = 2, \cdots, q.
+          \end{align*}
+    \item \alert{Estimation}:
+          Use the sample analogue of identification results, 
+          replacing $f(v_i|X_i)$ with its nonparametric kernel estimator.
+    \item \alert{Further Extension}: 
+          These results can be extended to 
+          mulitinomial choices models, partially linear latent variable models,
+          and threshold and censored regression models.
+  \end{itemize}
+\end{frame}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
-\section{Manski's (1975) Maximum Score Estimator}
+\section{Manski's (1975, 1985) Maximum Score Estimator}
   
+\begin{frame}{Manski's (1975, 1985) Maximum Score Estimator}
+\begin{itemize}
+  \item Consider the binary choice model:
+        \begin{align*}
+          Y_i &= \left\{
+            \begin{array}{l}
+              1 \text{ if } Y_i^{\star} = X_i^T \beta + \epsilon_i > 0, 
+              \\ 
+              0 \text{ if } Y_i^{\star} = X_i^T \beta + \epsilon_i \leq 0,
+            \end{array}
+            \right. \\
+          \text{med}(\epsilon_i \mid X_i) &= 0 \quad(\iff \text{med}(Y_i^{\star}\mid X_i)=X_i^T\beta) .
+        \end{align*}
+  \item \alert{Manski's maximum score estimator} is defined as
+        \begin{align*}
+          \hat{\beta}_M 
+           =\arg \max_{\beta} 
+             \sum_{i=1}^{n} Y_i 1(X_i^T \beta \geq 0)
+                            +
+                        (1-Y_i) 1(X_i^T \beta < 0),
+        \end{align*}
+        which is a LAD estimator of a linear median-regression model.
+\end{itemize}
+\end{frame}  
   
+\begin{frame}{Manski's (1975, 1985) Maximum Score Estimator}
+\begin{itemize}
+  \item Under some assumptions, $\hat{\beta}_M$ has strong consistency.
+  \item The rate of convergence is $n^{-\frac{1}{3}}$ (Kim and Pollard, 1990).
+  \item The limiting distribution is quite complex
+        \footnote{A distribution of a maximum of a multidimensional Brownian motion with quadratic drift.}
+        and therefore inconvenient for statistical inferences.
+  \item To approximate the asymptotic distribution, 
+        Manski and Thompson (1986) use a bootstrap procedure.
+\end{itemize}
+\end{frame}   
   
-  
-  
-  
-  
-
 
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1045,57 +1199,158 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
 \section{Horowitz's (1992) Smoothed Maximum Score Estimator}
   
+\begin{frame}{Horowitz's (1992) Smoothed Maximum Score Estimator}
+\begin{itemize}
+  \item Consider the binary choice model:
+        \begin{align*}
+            Y_i &= \left\{
+              \begin{array}{l}
+                1 \text{ if } Y_i^{\star} = X_i^T \beta + \epsilon_i > 0, 
+                \\ 
+                0 \text{ if } Y_i^{\star} = X_i^T \beta + \epsilon_i \leq 0,
+              \end{array}
+              \right. \\
+            \text{med}(\epsilon_i \mid X_i) &= 0 \quad(\iff \text{med}(Y_i^{\star}\mid X_i)=X_i^T\beta) .
+        \end{align*}
+  \item \alert{Horowitz's modified maximum score estimator} is defined as
+        \begin{align*}
+          \hat{\beta}_H = \arg\max_{\beta} \frac{1}{n} \sum_{i=1}^{n} (2Y_i -1)G\left(\frac{X_i^T\beta}{h}\right),
+        \end{align*}
+        where $G(\cdot)$ is a $p$-times continuously differentiable CDF.
+  \item Recall that Manski's criterion function has the indicator functions,
+        which lead to the lack of continuity.
+  \item Horowitz (1992) modifies Manski's criterion,
+        replacing the indicator functions 
+        with a twice continuously differentiable function 
+        that retains the essential features.
+\end{itemize}
+\end{frame} 
   
-  
-  
-  
-  
-  
-  
-  
-  
+\begin{frame}{Horowitz's (1992) Smoothed Maximum Score Estimator}
+\begin{itemize}  
+  \item Under some assumptions, as $n \to \infty; h=h_n>0;$ and $h \to 0$,
+        $G\left(\dfrac{X_i^T\beta}{h}\right) \to 1(X_i^T\beta \geq 0)$.
+  \item The convergence rate is $\sqrt{nh}$, and the asymptotic distribution is normal.
+  \item Taking $h = \left( \dfrac{c}{n}\right)^{\frac{1}{2p+1}}$ 
+        for some $0<c<\infty$,
+        the convergence rate becomes $n^{-\frac{p}{2p+1}}$.
+  \item With sufficiently large $p$, 
+        the convergence rate 
+        becomes close to $n^{-\frac{1}{2}}$.
+\end{itemize}
+\end{frame} 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Han's (1987) Maximum Rank Estimator}
   
+\begin{frame}{Han's (1987) Maximum Rank (Correlation) Estimator}
+\begin{itemize}
+  \item Consider the binary choice model:
+        \begin{align*}
+            Y_i &= \left\{
+              \begin{array}{l}
+                1 \text{ if } Y_i^{\star} = X_i^T \beta + \epsilon_i > 0, 
+                \\ 
+                0 \text{ if } Y_i^{\star} = X_i^T \beta + \epsilon_i \leq 0,
+              \end{array}
+              \right. \\
+            \text{med}(\epsilon_i \mid X_i) &= 0 \quad(\iff \text{med}(Y_i^{\star}\mid X_i)=X_i^T\beta) .
+        \end{align*}
+  \item \alert{Han's maximum rank correlation estimator} is defined as
+        \begin{align*}
+          \hat{\beta} = \arg \max_{\beta} 
+                        \frac{2}{n(n-1)}
+                        \sum_{i=1}^n \sum_{j>i}^n
+                        1(Y_i \geq Y_j) 1(X_i^T \beta \geq X_i^T \beta).
+        \end{align*}
+\end{itemize}
+\end{frame}  
   
-  
+\begin{frame}{Han's (1987) Maximum Rank (Correlation) Estimator}
+\begin{itemize}
+    \item To motivate the maximum rank correlation estimator, observe that
+          \begin{align*}
+            \P(Y_i > Y_j \mid X_i, X_j) \geq \P(Y_i \leq Y_j \mid X_i, X_j),
+          \end{align*}
+          whenever $X_i^T\alert{\beta_0} \geq X_j^T\alert{\beta_0}$,
+          which can be derived from the monotonicity of CDF 
+          and the independence of $\epsilon_i$'s and $X_i$'s.
+    \item \alert{Interpretation}: 
+          When $X_i^T\beta_0 \geq X_j^T\beta_0$, more likely than not $Y_i \geq Y_j$.
+    \item Let $G_H(\beta)$ denote the criterion function. 
+          Han (1987) shows that $\E[G_H(\beta)]$ is maximized at $\beta = \beta_0$.
+    \item Han (1987) also establishes the storng consistency.
+    \item Sherman (1993) shows that 
+          the maximum rank correlation estimator is $\sqrt{n}$-consistent
+          and has an asymptotically normal distribution.
+\end{itemize}
+\end{frame}  
 
+\begin{frame}{Sherman (1993)}
+  \begin{figure}
+    \begin{center}
+      \includegraphics[width=1.0\textwidth]{material/Sherman_1993.png}
+    \end{center}
+  \end{figure}
+\end{frame}
 
+\begin{frame}{More Generalized Cases?}
+\begin{itemize}
+  \item Matzkin (1992): 
+        Without imposing any parametric structure on 
+        either the systematic function of the observed exogenous variable
+        or on the distribution of the random error term.
+\end{itemize}
+\end{frame}
 
-  
-  
-  
-  
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Multinomial Discrete Choice Models}
   
-  
-  
-  
-  
-  
-  
+\begin{frame}{Multinomial Discrete Choice Models}
+\begin{itemize}
+  \item Consider the case where an individual faces $J > 2$ choices.
+  \item Define $Y_{ij} = 1$ if individual $i$ selects 
+        alternative $j \in \{1, \cdots, J\}$; 
+        and $Y_{ij}=0$ otherwise.
+  \item Set $F_{ij} = \P(Y_{ij}=1 \mid X_i) =\E(Y_{ij} \mid X_i)$.
+  \item The multiple choice equation is given in 
+        \[Y_{ij} = F_{ij} + \epsilon_{ij}.\]
+  \item The likelihood function is 
+        \[\sum_{i=1}^n\sum_{j=1}^J Y_{ij} \ln F_{ij}.\]
+\end{itemize}
+\end{frame} 
 
 
+\begin{frame}{Semiparametric Multinomial Discrete Choice Models}
+\begin{itemize}
+    \item \alert{Semiparametric Approach}: Set
+          \begin{align*}
+            F_{ij} &= \E(Y_{ij} \mid X_{i1}^T\beta_1, \cdots X_{iJ}^T\beta_J) \\
+                   &= g(X_{i1}^T\beta_1, \cdots X_{iJ}^T\beta_J),
+          \end{align*}
+          where the functional form of $g(\cdot)$ is unknown.
+    \item \alert{Estimation}:
+          Ichimura and Lee (1991), Lee (1995).
+\end{itemize}
+\end{frame} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Ai's (1997) Semiparametric Maximum Likelihood Approach}
   
+\begin{frame}{Ai's (1997) Semiparametric Maximum Likelihood Approach}
+\begin{itemize}
+  \item See the attached file.
+\end{itemize}
+\end{frame}  
   
-  
-  
-  
-  
-
-
-  
+ 
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1107,6 +1362,9 @@
 
 \begin{frame}{References}
 \begin{itemize}
+  \item Ai, C.(1997) 
+        ``A Semiparametric Maximum Likelihood Estimator,''
+        \textit{Econometrica,} 65(4), 933-963.
   \item Carroll, R. J., J. Fan, I. Gijbels, and M. P. Wand (1997)
         ``Generalized Partially Linear Single-Index Models,'' 
         \textit{Journal of the American Statistical Association,} 92(438), 477-489.
@@ -1116,69 +1374,110 @@
   \item Cattaneo, M. D., R. K. Rcump, and M. Jansson (2014)
         ``Small Bandwidth Asymptotics for Density-Weighted Average Derivatives,''
         \textit{Econometric Theory,} 30(1), 176-200.
-  \item Hardle, W., P. Hall, and H. Ichimura (1993)
-        ``Optimal Smoothing in Single-Index Models,'' 
-        \textit{Annals of Statistics,} 21, 157-178.
+  \item Han, A. K. (1987)
+        ``A Non-Parametric Analysis of Transformations,''
+        \textit{Journal of Econometrics,} 35, 191-209.
 \end{itemize}
 \end{frame}
 
 \begin{frame}{References}
 \begin{itemize}
+  \item Hardle, W., P. Hall, and H. Ichimura (1993)
+        ``Optimal Smoothing in Single-Index Models,'' 
+        \textit{Annals of Statistics,} 21, 157-178.
   \item Hardle, W., and T. M. Stoker (1989)
         ``Investigating Smooth Multiple Regression by the Method of Average Derivatives,''
         \textit{Journal of the American Statistical Association,} 84(408), 986-995.
   \item Hardle, W., and A. B. Tsybakov (1993)
         ``How Sensitive are Average Derivatives?''
         \textit{Journal of Econometrics,} 58, 31-48.
+  \item Horowitz, J. L. (1992)
+        ``A Smoothed Maximum Score Estimator for the Binary Response Model,''
+        \textit{Econometrica,} 60, 505-531.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{References}
+ \begin{itemize}
   \item Horowitz, J. L., and W. Hardle (1996)
         ``Direct Semiparametric Estimation of Single-Index Models with Discrete Covariates,''
         \textit{Journal of the American Statistical Association,} 91(436), 1632-1640.
   \item Hristache, M., A. Juditsky, and V. Spokoiny (2001)
         ``Direct Estimation of the Index Coefficient in a Single-Index Model,''
         \textit{The Annals of Statistics,} 29(3), 593-623.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{References}
- \begin{itemize}
   \item Ichimura, H. (1993) 
         ``Semiparametric Least Squares (SLS) and Weighted SLS Estimation of Single-Index Models,''
-        \textit{Journal of Econometrics,} 3, 205-228. 
-  \item Li, Q., X. Lu, and A. Ullah. (2003)
-        ``Multivariate Local Polynomial Regression for Estimating Average Derivatives,''
-        \textit{Journal of Nonparametric Statistics,} 15(4-5), 607-624.
-  \item Liang, H., and N. S. Wang (2005) 
-        ``Partially Linear Single-Index Measurement Error Models,'' 
-        \textit{Statistica Sinica,} 15, 99-116.
-  \item Newey, W. K. (1994)
-        ``Kernel Estimation of Partial Means and a General Variance Estimator,''
-        \textit{Econometric Theory,} 10, 233-253.
-  \item Nishiyama, Y., and P. M. Robinson (2005)
-        ``The Bootstrap and the Edgeworth Correction for Semiparametric Averaged Derivatives,''
-        \textit{Econometrica,} 73, 903-948.
+        \textit{Journal of Econometrics,} 3, 205-228.
+  \item Ichimura, H., and L. F. Lee. (1991)
+        ``Semiparametric Least Squares Single Equation Estimation of Multiple Index Models,'' 
+        In \textit{Nonparametric and Semiparametric Methods in Econometrics and Statistics,} 
+        ed. W. A. Barnett, J. L. Powell, and G. Tauchen. Cambridge University Press. 3-49.
  \end{itemize} 
 \end{frame}
 
 \begin{frame}{References}
-  \begin{itemize}
-  \item Powell, J. L., J. H. Stock, and T. M. Stoker (1989)
-        ``Semiparametric Estimation of Index Coefficients,''
-        \textit{Econometrica,} 57(6), 1403-1430. 
-  \item Powell, J. L., and T. M. Stoker (1996)
-        ``Optimal Bandwidth Choice for Density-Weighted Averages,''
-        \textit{Journal of Econometrics,} 75(2), 291-316.
-  \item Rilstone, P. (1991)
-        ``Nonparametric Hypothesis Testing with Parametric Rates of Convergence,''
-        \textit{International Economic Review,} 32(1), 209-227.
-  \item Xia, Y., H. Tong, and W. K. Li (1999)
-        ``On Extended Partially Linear Single-Index Models,''
-        \textit{Biometrika,} 86(4), 831-842.
+\begin{itemize}
+  \item Kim, J. and D. Pollard.(1990)
+      ``Cube Root Asymptotics,''
+      \textit{Annals of Statistics,} 18, 191-219.
+  \item Klein, R. W., and R. H. Spady. (1993)
+      ``An Efficient Semiparametric Estimator for Binary Response Models,''
+      \textit{Econometrica,} 61, 387-421.
+  \item Lewbel, A. (2000)
+        ``Semiparametric Qualitative Response Model Estimation with Unknown Heteroskedasticity or Instrumental Variables,''
+        \textit{Journal of Econometrics,} 97, 145-177.
+  \item Li, Q., X. Lu, and A. Ullah. (2003)
+      ``Multivariate Local Polynomial Regression for Estimating Average Derivatives,''
+      \textit{Journal of Nonparametric Statistics,} 15(4-5), 607-624.
+  \item Liang, H., and N. S. Wang (2005) 
+      ``Partially Linear Single-Index Measurement Error Models,'' 
+      \textit{Statistica Sinica,} 15, 99-116.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{References}
   \begin{itemize}
-    \item Textbooks and Lecture Notes:
+    \item Manski, C. F. (1975)
+    ``Maximum Score Estimation of the Stochastic Utility Model of Choice,''
+    \textit{Journal of Econometrics,} 3(3), 205-228.
+\item Manski, C. F., and T. S. Thompson (1986)
+    ``Operational Characteristics of Maximum Score Estimation,''
+    \textit{Journal of Econometrics,} 32, 85-108.
+\item Matzkin, R. L. (1992)
+    ``Nonparametric and Distribution-Free Estimation of the Binary Threshold Crossing and the Binary Choice Models,''
+    \textit{Econometrica,} 71, 1339-1375.
+\item Newey, W. K. (1994)
+  ``Kernel Estimation of Partial Means and a General Variance Estimator,''
+  \textit{Econometric Theory,} 10, 233-253.
+\item Nishiyama, Y., and P. M. Robinson (2005)
+  ``The Bootstrap and the Edgeworth Correction for Semiparametric Averaged Derivatives,''
+  \textit{Econometrica,} 73, 903-948.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{References}
+\begin{itemize}
+  \item Powell, J. L., J. H. Stock, and T. M. Stoker (1989)
+    ``Semiparametric Estimation of Index Coefficients,''
+    \textit{Econometrica,} 57(6), 1403-1430. 
+\item Powell, J. L., and T. M. Stoker (1996)
+    ``Optimal Bandwidth Choice for Density-Weighted Averages,''
+    \textit{Journal of Econometrics,} 75(2), 291-316.
+\item Rilstone, P. (1991)
+    ``Nonparametric Hypothesis Testing with Parametric Rates of Convergence,''
+    \textit{International Economic Review,} 32(1), 209-227.
+\item Sherman, R. P. (1993)
+    ``The Limiting Distribution of the Maximum Rank Correlation Estimator,''
+    \textit{Econometrica,} 61, 123-137.
+\item Xia, Y., H. Tong, and W. K. Li (1999)
+    ``On Extended Partially Linear Single-Index Models,''
+    \textit{Biometrika,} 86(4), 831-842.
+\end{itemize} 
+\end{frame}
+
+\begin{frame}{References}
+  \begin{itemize}
+    \item Textbooks:
     \begin{itemize}
       \item Horowitz, J. L. (2009)
             \textit{Semiparametric and Nonparametric Methods in Econometrics,}
@@ -1186,19 +1485,28 @@
       \item Li, Q., and J. S. Racine (2007). 
             \textit{Nonparametric Econometrics: Theory and Practice,} 
             Princeton University Press.
+      \item Pagan, A., and A. Ullah (1999).
+            \textit{Nonparametric Econometrics,}
+            Cambridge University Press.
       \item Serfling, R. J. (1980)
             \textit{Approximation Theorems of Mathematical statistics.} Wiley.
       \item van der Vaart, A. W. (2000)
             \textit{Asymptotic Statistics.} Cambridge.
       \item 末石直也 (2024) 『データ駆動型回帰分析：計量経済学と機械学習の融合』日本評論社．
       \item 西山慶彦，人見光太郎 (2023) 『ノン・セミパラメトリック統計解析（理論統計学教程：数理統計の枠組み）』共立出版．
-      \item ECON 718 NonParametric Econometrics (Bruce Hansen, Spring 2009, University of Wisconsin-Madison).
-      \item セミノンパラメトリック計量分析（末石直也，2014年度後期，京都大学）．
     \end{itemize}
   \end{itemize}
 \end{frame}
 
-
+\begin{frame}{References}
+\begin{itemize}
+  \item Lecture Notes:
+  \begin{itemize}
+    \item ECON 718 NonParametric Econometrics (Bruce Hansen, Spring 2009, University of Wisconsin-Madison).
+    \item セミノンパラメトリック計量分析（末石直也，2014年度後期，京都大学）．
+  \end{itemize}
+\end{itemize}
+\end{frame}
 
 
 \end{document}
