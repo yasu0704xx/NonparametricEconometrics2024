@@ -1,0 +1,450 @@
+\documentclass[xcolor=svgnames,dvipdfmx,cjk]{beamer} 
+\AtBeginDvi{\special{pdf:tounicode 90ms-RKSJ-UCS2}} 
+\usetheme{Madrid}
+\setbeamercolor{background canvas}{bg=Snow}
+\usecolortheme[named=RoyalBlue]{structure}
+\usefonttheme{professionalfonts}
+\setbeamertemplate{theorems}[numbered]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{proposition}[thm]{Proposition}
+\theoremstyle{example}
+\newtheorem{exam}[thm]{Example}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{question}[thm]{Question}
+\newtheorem{prob}[thm]{Problem}
+\usepackage{bbm}
+\usepackage{ascmac}
+
+\begin{document} 
+
+%%%%%講演に関する情報%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title[Li and Racine (2007) Chap. 5]{Nonparametric Estimation of Conditional PDF} 
+\author[Y. Matsumura]{Yasuyuki Matsumura}          
+\institute[]{Graduate School of Economics, Kyoto University} 
+\date{\today}
+
+
+%%%%%タイトルページ%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}                  
+\titlepage                     
+\end{frame}
+
+
+%%%%%目次のページ%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}                  
+\tableofcontents
+\end{frame}
+%本文中に挿入するSECTION環境によって定義された目次が自動で反映される
+
+
+%%%%%基本のコマンド%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{箇条書き} :目次の設定
+% \begin{frame} & \end{frame} :1ページのスライドを作成
+% \begin{itemaize} :箇条書き
+%   \item A
+%   \item B
+%   \item C
+% \end{itemize}
+% \pause :スライドを一旦停止
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conditional Density Estimation: Relevant Variables}
+
+\begin{frame}{Mixed Data}
+  \begin{itemize}
+    \item $Y \in \mathbb{R}^1$
+    : 独立変数（被説明変数）．まずは連続の場合を考える．
+    \item $X \in \mathbb{R}^{q+r}$
+    : 共変量．$q$個の連続r.v.と$r$個の離散r.v.からなる．
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{条件付き密度}
+  \begin{itemize}
+  \item $g(y|x) = \dfrac{f(x,y)}{\mu(x)}$ 
+    : $Y$の$X$で条件付けた条件付き密度．
+    \begin{itemize}
+      \item $f(\cdot)$ : $(X,Y)$の結合密度．
+      \item $\mu(\cdot)$ : $X$の周辺密度．
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{条件付き密度の推定}
+\quad 
+条件付き密度$g(y|x)$をノンパラメトリック推定量
+  \begin{align*}
+  \hat{g}(y|x) 
+    &=\dfrac{\hat{f}(x,y)}{\hat{\mu}(x)}, \\
+  \hat{f}(x,y) 
+    &=\displaystyle\frac{1}{n} \sum_{i=1}^n K_{\gamma}(x,X_i) \times k_{h_0}(y,Y_i), \\
+  \hat{\mu}(x) 
+    &= \displaystyle\frac{1}{n} \sum_{i=1}^n K_{\gamma}(x,X_i)
+  \end{align*}
+によって推定する．
+\end{frame}
+
+
+\begin{frame}{条件付き密度の推定}
+\quad 
+ただし，各変数に対するカーネルは，
+  \begin{align*}
+    K_{\gamma}(x,X_i) 
+      &= W_h(x^c,{X_i}^c) \, L(x^d, {X_i}^d, \lambda), \\
+    W_h(x^c,{X_i}^c) 
+      &= \displaystyle \prod_{s=1}^{q} 
+         \frac{1}{h_s} w\left( \frac{{x_s}^c-{X_{is}}^c} {h_s}\right), \\
+    L(x^d, {X_i}^d, \lambda) 
+      &= \displaystyle \prod_{s=1}^r 
+         \left(\frac{\lambda_s}{c_s-1}\right)^{N_{is}(x)}
+         (1-\lambda_s)^{1-N_{is}(x)},\\
+    N_{is}(x) 
+      &= \mathbf{1}(X_{is} \neq {x_s}^d), \\
+    k_{h_0}(y,Y_i) 
+      &= \displaystyle \frac{1}{h_o} k \left( \frac{y-Y_i}{h_0}\right)
+  \end{align*}
+によって定める．  
+\end{frame}
+
+
+\begin{frame}{条件付き密度の推定}
+\quad 
+分析者自身で設定しなければならないTuning Parametersは，
+  \begin{itemize}
+    \item $h = (h_1,\cdots,h_q) \in \mathbb{R}^q$, 
+    \item $\lambda = (\lambda_1,\cdots,\lambda_r) \in \mathbb{R}^r$,
+    \item $h_0 \in \mathbb{R}^1$
+  \end{itemize}
+の３種類のバンド幅である．
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conditional Density Bandwidth Selection}
+
+\begin{frame}{最小二乗CV}
+\quad 
+CV基準（CV関数）として，weighted-ISEを考える．
+表記を簡単にするため， 
+\[\displaystyle \int dx = \sum_{x^d} \int dx^c\]
+と書くことにすると，
+weighted-ISEは，
+\begin{align*}
+  ISE &= \displaystyle \int \left[\hat{g}(y|x) - g(y|x)\right]^2 \mu(x)M(x^c)dxdy \\
+      &=   \displaystyle \int \hat{g}(y|x)^2 \mu(x)M(x^c) dxdy \\
+      &- 2 \displaystyle \int \hat{g}(y|x)g(y|x)\mu(x)M(x^c)dxdy \\
+      &+   \displaystyle \int g(y|x)^2 \mu(x) M(x^c) dxdy \\
+      &=: I_{1n} -2I_{2n}+I_{3n}
+\end{align*}
+と表わされる．  
+\end{frame}
+
+\begin{frame}{最小二乗CV}
+\quad 
+$I_{3n}$は推定量$\hat{g}$を含まないので，Tuning Parametersに関する最小化に関係がない．
+そこで，改めてCV基準を
+\begin{align*}
+  & I_{1n} - 2 I_{2n} \\
+  & =  \displaystyle \int \hat{g}(y|x)^2 \mu(x)M(x^c) dxdy 
+    - 2 \displaystyle \int \hat{g}(y|x)g(y|x)\mu(x)M(x^c)dxdy 
+\end{align*}
+とする．
+\end{frame}
+
+\begin{frame}{最小二乗CV}
+\quad 
+$I_{1n}, I_{2n}$はなんらかの推定対象ではあるものの，
+このままの形ではどのように推定すればよいかわかりにくい．
+そこで，$I_{1n}$を次のように変形する：
+\begin{align*}
+    I_{1n} 
+      &= \displaystyle \int \hat{g}(y|x)^2 \mu(x)M(x^c) dxdy \\
+      &= \displaystyle \int \frac{{\hat{f}(x,y)}^2}{\hat{\mu}(x)^2}
+         \mu(x)M(x^c) dxdy \\
+      &= \int \left[ \int \hat{f}(x,y)^2 dy \right] 
+         \frac{1}{\hat{\mu}(x)^2} M(x^c) \mu(x) dx \\
+      &= \int \hat{G}(x) \frac{1}{\hat{\mu}(x)^2} M(x^c) \mu(x) dx 
+         \quad \left(\leftarrow \hat{G}(x) = \int \hat{f}(x,y)^2 dy \right) \\
+      &= \mathbb{E} \left[\frac{\hat{G}(X)}{\hat{\mu}(X)^2} M(X^c) \right].
+\end{align*}
+\end{frame}
+
+\begin{frame}{最小二乗CV}
+\quad 同様にして，$I_{2n}$も次のように変形する：
+\begin{align*}
+  I_{2n} 
+      &= \displaystyle \int \hat{g}(y|x) g(y|x)\mu(x)M(x^c)dxdy \\
+      &= \displaystyle \int \hat{g}(y|x) f(x,y)M(x^c)dxdy
+         \quad (\leftarrow g(y|x)\mu(x)=f(x,y))  \\
+      &= \mathbb{E}_{Z}[\hat{g}(Y|X)M(X^c)] \\
+      &= \mathbb{E}_{Z}\left[ \frac{\hat{f}(X,Y)}{\hat{\mu}(X)} M(X^c) \right],
+\end{align*}
+where $Z=(X,Y)$.
+\end{frame}
+
+\begin{frame}{最小二乗CV}
+\[ 
+   I_{1n} = \mathbb{E} \left[\frac{\hat{G}(X)}{\hat{\mu}(X)^2} M(X^c) \right],\,
+   I_{2n} = \mathbb{E}_{Z}\left[ \frac{\hat{f}(X,Y)}{\hat{\mu}(X)} M(X^c) \right]
+\]
+を標本版で推定する．ただし，
+$\hat{G}(X), \hat{\mu}(X), \hat{f}(X,Y)$
+は，Leave-One-Out推定量で置き換える：
+\begin{align*}
+  \hat{I}_{1n} 
+      &= \frac{1}{n} \sum_{i=1}^{n} 
+         \frac{\hat{G}_{-i}(X_i)}{\hat{\mu}_{-i}(X_i)^2} M({X_i}^c), \\
+  \hat{I}_{2n}
+      &= \frac{1}{n} \sum_{i=1}^{n}
+         \frac{\hat{f}_{-i}(X_i,Y_i)}{\hat{\mu}_{-i}(X_i)} M({X_i}^c)
+\end{align*}
+こうして，CV基準の${I}_{1n}, {I}_{2n}$を推定量で置き換えたものを
+\[ 
+  CV_g(h_0,h,\lambda) = \hat{I}_{1n} -2\hat{I}_{2n}
+\]
+とおく．
+\end{frame}
+
+\begin{frame}{最小二乗CV}
+  \quad 
+  CV基準 
+  $CV_g(h_0,h,\lambda) = \hat{I}_{1n} -2\hat{I}_{2n}$
+  の主要項は，
+  \begin{align*}
+    CV_{g0}(h_0,h,\lambda) 
+      &= \text{IMSE} \\
+      &= \int 
+      \left\{
+        \mathbb{E} [\hat{f}(x,y) - \hat{\mu}(x) g(y|x)]^2 
+        \frac{M(x^c)}{\mu(x)^2}
+      \right\}
+      dxdy   
+  \end{align*}
+  である\footnote{証明はHall et al. (2004) を参照せよ．}．
+ 
+\end{frame}
+
+\begin{frame}{最小二乗CV}
+  \quad 
+  まず，
+  $\mathbb{E}\left\{
+    \hat{f}(x,y) - \hat{\mu}(x) g(y|x)
+  \right\} $
+  を評価する．
+  \begin{itemize}
+    \item $\mathbb{E}\{\hat{f}(x,y)\}$
+    \item $\mathbb{E}\{\hat{\mu}(x)\}$
+    \item $\mathbb{E}\{\hat{\mu}(x) g(y|x)\}$
+    \item $\mathbb{E}\left\{\hat{f}(x,y) - \hat{\mu}(x) g(y|x) \right\} $
+  \end{itemize}
+  次に，同様の計算により，$\text{Var}(\hat{f}(x,y) - \hat{\mu}(x) g(y|x))$を評価する．
+  そして，バイアス項の二乗と分散のオーダーが「つりあう」ように，
+  バンド幅$\hat{h}_0,\hat{h}_s, \hat{\lambda}_s$ を選択する
+  \footnote{これらの計算過程をスライドで表示するには気の遠くなるようなコーディングが必要なので，板書する．}．
+\end{frame}
+
+\begin{frame}{最小二乗CV}
+  \quad 
+  先ほどの計算により，適切な$\mathcal{X}_g (a_0, a, b)$を用いて
+  \[ CV_{g0} (h_0, h, \lambda) 
+     = n^{\frac{-q}{q+4}} \mathcal{X}_g (a_0, a, b)
+  \]
+  と表現できる．ただし，
+  \begin{align*}
+    {h}_s 
+      &= a_s \times n^{\frac{-1}{q+5}} (s = 0, 1, \cdots, q), \\
+    {\lambda}_s 
+      &= b_s \times n^{\frac{-2}{q+5}} (s = 1, \cdots, r)
+  \end{align*}
+  である．
+\end{frame}
+
+\begin{frame}{最小二乗CV}
+  \begin{itemize}
+    \item $CV_g(h_0, h, \lambda)$のminimizerを
+          $\hat{h}_0,
+          {\hat{h}_s}^0,  
+          {\hat{\lambda}_s}^0
+          $
+          とする．
+    \item $CV_{g0}(h_0, h, \lambda)$のminimizerを
+          ${h_0}^0 , 
+          {h_s}^0 , 
+          {\lambda_s}^0 $
+          とする．
+    \item  $\mathcal{X}_g(a_o, a, b)$のminimizerを
+           ${a_0}^0, 
+            {a_s}^0 ,
+            {b_s}^0 $
+            とする．
+    \item $CV_g = CV_{g0} + (\text{s.o.})$
+          より，
+          $\hat{h}_s = {h_s}^0 + (\text{s.o.}), \,
+           \hat{\lambda}_s = {\lambda_s}^0 + (\text{s.o.}).$
+    \item $CV_{g0} (h_0, h, \lambda) 
+          = n^{\frac{-q}{q+4}} \mathcal{X}_g (a_0, a, b).$
+  \end{itemize}
+  \begin{itembox}[l]{Theorem 5.1\footnote{証明はHall et al. 2004を参照せよ．}}
+    \begin{align*}
+      n^{\frac{1}{q+5}} \hat{h}_S
+       &\xrightarrow{p} {a_s}^0 \, \text{for}\,s=0,1,\cdots,q, \\
+      n^{\frac{2}{q+5}} \hat{\lambda}_S
+       &\xrightarrow{p} {a_s}^0 \, \text{for}\,s=1,\cdots,r, \\
+      n^{\frac{4}{q+5}} \inf CV_g 
+       &\to \inf \mathcal{X}_g \, \text{in probability.}
+     \end{align*}
+  \end{itembox}
+  \begin{itemize}
+    \item これにより，推定量$\hat{g}(y|x)$の漸近分布を求めることができる．
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{最尤CV}
+  \begin{itemize}
+    \item 最小二乗CVは，サンプルサイズが大きいときに計算が大変である．
+    \item 実装を考慮すると，最尤CVの方が計算コストが軽い．
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{最尤CV}
+ \quad 
+ 次に示す尤度関数
+ $\mathcal{L}$
+ のmaximizer
+ $h_0, \cdots, h_q, \lambda_1, \cdots, \lambda_r$
+ をバンド幅として採用する：
+ \begin{align*}
+  \mathcal{L} = \sum_{i=1}^n \ln \hat{g}_{-i}(Y_i|X_i),
+ \end{align*}
+ where 
+ \begin{align*}
+  \hat{g}_{-i}(Y_i|X_i) 
+    &= \frac{\hat{f}_{-i}(X_i,Y_i)}{\hat{\mu}_{-i}(X_i)}, \\
+ \end{align*}
+ and
+ $\hat{f}_{-i}(X_i,Y_i)$
+ and
+ $\hat{\mu}_{-i}(X_i)$
+ are the leave-one-out kernel estimators of 
+ $f(X_i,Y_i)$
+ and
+ $\mu(X_i)$,
+ respectively.
+\end{frame}
+
+\begin{frame}{最尤CV}
+  \begin{itemize}
+    \item 最尤CVは，裾の厚い分布に対して弱い．
+    \item 過剰平滑化や一致性を失うことにつながり得る．
+    \item 詳しくは，Hall 1987a, 1987bを参照せよ．
+  \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Conditional Density Estimation: Irrelevant Variables}
+
+\begin{frame}{Irrelevant Variables}
+  \begin{itemize}
+    \item 説明変数にirrlevant variablesが含まれていても，
+          漸近的にはsmoothed outされるので，
+          結果に大きな変更はない．
+  \end{itemize}
+  \begin{itembox}[l]{Theorem 5.2\footnote{証明はHall et al. 2004を参照せよ．}}
+    \begin{align*}
+      &n^{\frac{1}{q_1 + 5}} \hat{h}_s
+       \xrightarrow{p} {a_s}^0 \, \text{for}\,s=0,1,\cdots,q_1, \\
+      &\mathbb{P}(\hat{h}_s>C) 
+       \rightarrow 1 \, \text{for}\, q_1 + 1 \leq s \leq q \,\text{and for all}\, C > 0,\\
+      &n^{\frac{2}{q_1 + 5}} \hat{\lambda}_S
+       \xrightarrow{p} {a_s}^0 \, \text{for}\,s=1,\cdots,r_1, \\
+      &\hat{\lambda}_S
+       \xrightarrow{p} \frac{c_s - 1}{c_s} \,\text{for}\, r_1 + 1 \leq s \leq r,\\
+      &n^{\frac{4}{q_1 + 5}} \inf CV_{\gamma}(\hat{h},\hat{\lambda}) 
+       \xrightarrow{p} \inf \mathcal{X}.
+    \end{align*}
+  \end{itembox}
+\end{frame}
+
+\begin{frame}{Irrelevant Variables}
+  \begin{itembox}[l]{Theorm 5.3 （漸近正規性）\footnote{証明はHall et al. 2004を参照せよ．}}
+    \begin{align*}
+      &\sqrt{ n \hat{h}_1 \cdots \hat{h}_{q1} }
+       \left(
+        \hat{g}(y|x) - g(y|x) 
+        - \sum_{s=0}^{q_1} B_{1s}(\bar{x},y) {\hat{h}_s}^2
+        - \sum_{s=1}^{r_1} B_{2s}(\bar{x},y) \hat{\lambda}_S 
+        \right) \\
+      & \xrightarrow{d} N(0, \sigma^2_g(\bar{x},y)),
+    \end{align*}
+  \end{itembox}
+\end{frame}
+
+\begin{frame}{$Y$が離散変数の場合}
+  \quad 
+  ここまでは，
+  $Y \in \mathbb{R}^1$
+  が連続変数である場合を考えてきた．
+  $Y$が離散変数であるとき，$Y$に対するカーネルを
+  \begin{align*}
+    l(y, Y_i, \lambda_0) = {\lambda_0}^{N_{i}(y)} (1-\lambda_0)^{1-N_{i}(y)} ,
+  \end{align*}
+  where
+  \begin{align*}
+    N_{i}(y) = \mathbf{1}(Y_i \neq y)
+  \end{align*}
+  に変更する．
+  この変更によって，
+  定理5.2が主張するような適切なバンド幅のオーダーも
+  変更する必要がある．
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{The Multivariate Dependent Variables Case}
+
+\begin{frame}{$Y \in \mathbb{R}^{q+r}$（多次元）の場合}
+  次回．
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Applications}
+
+\begin{frame}{応用例}
+  省略．
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{References}
+
+\begin{frame}{References}
+  \begin{itemize}
+    \item Li, Q. and J. S. Racine, (2007). 
+          \textit{Nonparametric Econometrics: Theory and Practice,} 
+          Princeton University Press.
+  \end{itemize}
+\end{frame}
+
+
+
+
+
+\end{document}
