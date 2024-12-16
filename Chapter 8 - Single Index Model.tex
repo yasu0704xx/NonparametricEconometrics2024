@@ -166,7 +166,7 @@
             \item The second approach is to set one component of $\beta_0$ to equal one. 
                   This approach requires that 
                   the variable corresponding to the component set to equal one 
-                  is continuously distributed 
+                  to be continuously distributed 
                   and has a non-zero coefficient.
             \item Then, $x$ must be dimension $2$ or larger. 
                   If $x$ is one-dimensional, then $\beta_0 \in \mathbb{R}^1$ is simply normalized to 1, 
@@ -204,7 +204,7 @@
         with respect to $\beta$.
   \item We could think about replacing $g(\cdot)$ with a nonparametric estimator $\hat{g}(\cdot)$.
   \item However, since $g(z)$ is the conditional mean of $Y_i$ given $X_i^{T} \beta_0 = z$,
-        \alert{$g(\cdot)$ depends on unknown $\beta_0$}, so we cannot estimate $g(\cdot)$ here.
+        \alert{$g(\cdot)$ depends on unknown $\beta_0$}. thus we cannot estimate $g(\cdot)$ here.
 \end{itemize}
 \end{frame}
 
@@ -271,7 +271,7 @@
                        {X_j^{T}\beta - X_i^{T}\beta}
                        {h} 
                 \right) $,
-           so that we do not suffer the random denominator problem. 
+           so that we do not suffer from the random denominator problem. 
         \begin{itemize}
           \item $A_\delta = \{ x: p(x^{T}\beta) \geq \delta, \text{ for } ^\forall \beta \in \mathcal{B}\}$.
           \item $A_n = \{ x: || x - x^{\star} || \leq 2h, \text{ for } ^\exists x^{\star} \in A_\delta \}$, 
@@ -284,7 +284,7 @@
   \begin{itemize}
     \item Let $\hat{\beta}$ denote the semiparametric estimator of $\beta_0$
           obtained from minimizing $S_n(\beta)$.
-    \item To derive the asymptotic distribution of $\hat{\beta}$, the following conditions are neeeded:
+    \item To derive the asymptotic distribution of $\hat{\beta}$, the following conditions are needed:
   \end{itemize}
   \end{frame}
   
@@ -375,7 +375,7 @@
             If one assues that  $\E(u_i^2 \mid X_i) = \sigma^2(X_i^{T}\beta_0)$,
             that is, the conditional variance depends only on the single index $X_i^{T}\beta_0$,
             the choice of $w(X_i) = \frac{1}{\sigma^2({X_i^{T}\beta_0})}$ can lead to a semiparametrically efficient estimation.
-      \item We could adopt a two-step procedure as follows.
+      \item We could employ a two-step procedure as follows.
     \end{itemize}
   \end{frame}
   
@@ -671,7 +671,7 @@
           \item the support of $X$ is a compact set, and that 
           \item the density $f(x)$ is bounded below by a positive constant at the support of $X$,
         \end{itemize}
-        which leads to avoiding the use of a trimming function. 
+        which avoids the use of a trimming function. 
 \end{itemize}  
 \end{frame}
 
@@ -1186,7 +1186,7 @@
   \item The rate of convergence is $n^{-\frac{1}{3}}$ (Kim and Pollard, 1990).
   \item The limiting distribution is quite complex
         \footnote{A distribution of a maximum of a multidimensional Brownian motion with quadratic drift.}
-        and therefore inconvenient for statistical inferences.
+        and therefore not ideal for statistical inferences.
   \item To approximate the asymptotic distribution, 
         Manski and Thompson (1986) use a bootstrap procedure.
 \end{itemize}
@@ -1298,8 +1298,7 @@
 
 \begin{frame}{More Generalized Cases?}
 \begin{itemize}
-  \item Matzkin (1992): 
-        Without imposing any parametric structure on 
+  \item Matzkin (1992) does not impose any parametric structure on 
         either the systematic function of the observed exogenous variable
         or on the distribution of the random error term.
 \end{itemize}
