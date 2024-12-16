@@ -1258,7 +1258,9 @@
               \right. \\
             \text{med}(\epsilon_i \mid X_i) &= 0 \quad(\iff \text{med}(Y_i^{\star}\mid X_i)=X_i^T\beta) .
         \end{align*}
-  \item \alert{Han's maximum rank correlation estimator} is defined as
+  \item \alert{Han's maximum rank correlation estimator}
+        \footnote{この推定量もindicatorを用いて定義されているが，先ほどのmaximum score estimatorと違って，$\sqrt{n}$一致性をもつし，漸近分布はNormalである．$\sum$を2回とることで，ある種のsmoothnessが成立しているのだろうか？}
+        is defined as
         \begin{align*}
           \hat{\beta} = \arg \max_{\beta} 
                         \frac{2}{n(n-1)}
@@ -1284,7 +1286,9 @@
     \item Han (1987) also establishes the storng consistency.
     \item Sherman (1993) shows that 
           the maximum rank correlation estimator is $\sqrt{n}$-consistent
-          and has an asymptotically normal distribution.
+          and has an asymptotically normal distribution
+          \footnote{目的関数のかたちを見てわかるように，これらの漸近的な性質は$U$統計量の漸近理論からderiveされている．}
+          .
 \end{itemize}
 \end{frame}  
 
@@ -1344,9 +1348,11 @@
 \section{Ai's (1997) Semiparametric Maximum Likelihood Approach}
   
 \begin{frame}{Ai's (1997) Semiparametric Maximum Likelihood Approach}
-\begin{itemize}
-  \item See the attached file.
-\end{itemize}
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=1\textwidth]{material/Ai_1997.png}
+  \end{center}
+\end{figure}
 \end{frame}  
   
  
