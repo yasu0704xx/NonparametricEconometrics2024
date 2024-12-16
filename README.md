@@ -3,7 +3,7 @@
 ## このリポジトリの概要
 - このリポジトリでは，松村が計量経済学ゼミで使用した発表資料を保管しています．
   - 科目ナンバリング：G-ECON31 6A503 SJ43（計量経済学1），G-ECON31 6A504 SJ43（計量経済学2）．
-  - Li and Racine (2007)を輪読しています．
+  - 教科書：Li, Q. and J. S. Racine. (2007) *Nonparametric Econometrics: Theory and Practice,* Princeton University Press.
   - 2024年12月現在，2章後半，5章，8章の資料が保管されています．
   - 10章，11章の発表資料を近日追加する予定．
 - 主要な参考文献は「References.pdf」というファイルに記録してあります．
