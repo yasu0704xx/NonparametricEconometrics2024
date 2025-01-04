@@ -1,0 +1,508 @@
+\documentclass[xcolor=svgnames,dvipdfmx,cjk]{beamer} 
+\AtBeginDvi{\special{pdf:tounicode 90ms-RKSJ-UCS2}} 
+\usetheme[progressbar=frametitle]{metropolis}
+\setbeamertemplate{headline}[miniframes]
+\setbeamercolor{background canvas}{bg=Snow} 
+\setbeamercolor{frametitle}{fg=white, bg=gray!40!black}  
+\setbeamercolor{section in head/foot}{fg=pink!70!red, bg=gray!30!black}
+\setbeamercolor{alerted text}{fg=orange!50!red} 
+\usefonttheme{professionalfonts}
+\setbeamertemplate{theorems}[numbered]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{proposition}[thm]{Proposition}
+\theoremstyle{example}
+\newtheorem{exam}[thm]{Example}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{question}[thm]{Question}
+\newtheorem{prob}[thm]{Problem}
+\def\Avar{\text{Avar}}
+\def\var{\text{var}}
+\def\Var{\text{Var}}
+\def\cov{\text{cov}}
+\def\Cov{\text{Cov}}
+\def\E{\mathbb{E}}
+\def\R{\mathbb{R}}
+\def\P{\mathbb{P}}
+\def\parrow{\xrightarrow{p}}
+\def\darrow{\xrightarrow{d}}
+\def\plim{\text{plim }}
+\usepackage{bbm}
+\usepackage{ascmac}
+\usepackage{tcolorbox}
+
+
+\begin{document} 
+
+%%%%%講演に関する情報%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Selectivity Models and Censored Models} 
+\subtitle{Li and Racine (2007, Chapters 10 and 11)}
+\author{Yasuyuki Matsumura}
+\institute{Graduate School of Economics, Kyoto University}
+\date{\today} % 日付を自動で挿入
+
+%%%%%タイトルページ%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}                  
+\titlepage            
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Before showwing the contents of the slides...
+\section{Sample Selection Isuues}
+
+\begin{frame}{Sample Selection}
+
+      \begin{itemize}
+            \item Sample selection isuues frequently arise in empirical studies.
+            \item We worry that the impact of treatment for those ``selected as treated'' 
+                  will differ from that for persons randomly selected from the general population.
+            \item Pioneering parametric approaches to deal with sample selection can be found in Heckman (1976, 1979).
+      \end{itemize}
+      
+\end{frame}
+
+
+\section{Semiparametric Type-2 Tobit Models}
+
+\begin{frame}{Type-2 Tobit Models}
+      \begin{itemize}
+            \item The Type-2 Tobit model is the four equation system:
+                  \begin{align*}
+                        Y_{1i}^{\star} &= X_{1i}^T \beta_1 + u_{1i},\\
+                        Y_{2i}^{\star} &= X_{2i}^T \beta_2 + u_{2i},\\
+                        Y_{1i}         &= 1(Y_{1i}^{\star} > 0),\\
+                        Y_{2i}         &= Y_{2i}^{\star} \times 1(Y_{1i} = 1).
+                  \end{align*}
+            \item The variables $(Y_{1i}^{\star}, Y_{2i}^{\star})$ are latent (unobserved).
+            \item The observed variables are $( Y_{1i}, Y_{2i}, X_{1i}, X_{2i})$.
+            \item Effectively, $Y_{2i}^{\star}$ is only when $Y_{1i} = 1$, equivalently when $Y_{1i}^{\star} > 0$.
+            \item Typically, the second equation is of interest, e.g. the coefficient $\beta_2$. 
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Type-2 Tobit Models: Estimation}
+      \begin{itemize}
+            \item The Type-2 Tobit model is a classical selection model introduced by Heckman (1976).
+            \item It is conventional to assume that the error terms $(u_{1i}, u_{2i})$ are independent of $X_i = (X_{1i}, X_{2i})$.
+            \item For details of Heckman's estimation procedure, see an attached pdf file.
+            \item Heckman's estimation is one of the parametric approaches, 
+                  as he imposes the following parametric distributional assumptions on the joint distribution of the errors:
+                  \begin{align*}
+                        \begin{bmatrix}
+                              u_{1i} \\ u_{2i}
+                        \end{bmatrix}
+                        \sim 
+                        \text{Normal}
+                        \left(
+                              \begin{bmatrix}
+                                    0 \\ 0
+                              \end{bmatrix},
+                              \begin{bmatrix}
+                                    1 & \sigma_{12} \\
+                                    \sigma_{21} & \sigma_{2}^2
+                              \end{bmatrix}
+                        \right)
+                  \end{align*}
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Semiparametric Type-2 Tobit Models}
+      \begin{itemize}
+            \item Here we do not impose parametric parametric distributional assumptions on the joint distribution of the errors.
+            \item Assume that $(u_{1i}, u_{2i})$ are independent of $X_i = (X_{1i}, X_{2i})$.
+            \item Then, we obtain 
+                  \begin{align*}
+                        \E(Y_{2i} \mid X_i, Y_{1i}=1) 
+                              &= X_{2i}^T \beta_2 + \E(u_{2i} \mid X_i, Y_{1i}=1)\\
+                              &\equiv X_{2i}^T \beta_2 + g(X_{1i}^T\beta_1),
+                  \end{align*}
+                  where
+                  \begin{align*}
+                        g(z) = \E(u_{2i} \mid u_{1i}>-z) = 1 - F_{u_2 \mid u_1}(-z),
+                  \end{align*}
+                  and 
+                  $F_{u_2 \mid u_1}(\cdot)$ is the conditional CDF of $u_{2i}$ given $u_{1i}$.    
+            \item The functional form of $g(\cdot)$ is unknown.
+      \end{itemize}
+\end{frame}
+
+\begin{frame}
+      \begin{itemize}
+            \item The simple regression of $Y_{2i}$ on $X_{2i}$ using the available data yields
+                  \begin{align*}
+                        & Y_{2i} = X_{2i}^T \beta_2 + g(X_{1i}^T \beta_1) + \epsilon_{2i},\\
+                        & \E(\epsilon_{2i} \mid X_i, Y_{1i}=1) = 0,
+                  \end{align*}
+                  which is a partially linear single index model.
+            \item Here we review the following estimation methods:
+                  \begin{itemize}
+                        \item Powell (1987),
+                        \item Ichimura and Lee (1991),
+                        \item Gallant and Nychka (1987),
+                        \item Heckman (1990)\footnote{He proposes an estimation of intercept.}.
+                  \end{itemize} 
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Powell (1987)}
+      \begin{itemize}
+            \item Powell (1987) proposes a two-step estimation procedure.
+            \item \alert{Infeasible Estimation}: Define $Z_i = X_{1i}^T \beta_1$. If $Z_i$ were observed, the regression is 
+                  \begin{align*}
+                        Y_{2i} = X_{2i}^T \beta_2 + g(Z_i) + \epsilon_{2i},
+                  \end{align*}
+                  which is a partially linear model. 
+            \item It can be estimated using Robinson's approach.
+            \item Note that the intercept is absorbed by $g(\cdot)$, 
+                  and that it must be excluded from $X_{2i}$
+                  \footnote{Recall the identification conditions in semiparametric partially linear models.}
+                  .
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Powell (1987): Feasible Two-Step Estimation}
+      \begin{itemize}
+            \item In reality, $Z_i$ is not observed. 
+            \item We implement the following two-steo approach.
+            \item \alert{1st Step}: Estimate $\beta_1$ 
+                  by a semiparametric binary choice estimator, 
+                  or by Powell's (1984) CLAD estimator
+                  \footnote{CLAD推定量を使うのは，後ほど触れるType-3 Tobitの2段階推定の方が適切なのでは？}
+                  .
+            \item \alert{2nd Step}: Let $\hat{\beta}_1$ denote the estimator of $\beta_1$.
+            \item Replace $Z_i$ with $\hat{Z}_i = X_{1i}^T \hat{\beta}_1$: $ Y_{2i} = X_{2i}^T \beta_2 + g(\hat{Z}_i) + \epsilon_{2i}$.
+            \item Estiamte $\beta_2$ and $g(\cdot)$ by Robinson's estimator.
+            \item Note that $\hat{Z}_i = X_{1i}^T \hat{\beta}_1$ is a generated regressor, 
+                  and that the asymptotic distribution will differ from the result presented in Chapter 7.
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Ichimura and Lee (1991)}
+      \begin{itemize}
+            \item Ichimura and Lee (1991) propose a joint estimator for $\theta = (\beta_1^T, \beta_2^T)^T$ 
+                  based on the nonlinear regression:
+                  \begin{align*}
+                        Y_{2i} = X_{2i} + g(X_{1i}\beta_1) + \epsilon_{2i}
+                  \end{align*}
+                  for observations $i$ such that $Y_{2i}$ is observed.
+            \item Thier objective function is given by 
+                  \begin{align*}
+                        Q_n(\theta) 
+                              = \frac{1}{n} \sum_{i=1}^n
+                                1(X_i \in \mathcal{X}) 
+                                \left[
+                                    Y_i 
+                                    - X_{2i}^T \beta_2 
+                                    - \hat{g}(X_{1i}^T \beta_1)
+                                \right]^2,
+                  \end{align*}
+                  where
+                  \begin{align*}
+                        \hat{g}(X_{1i}^T \beta_1) 
+                              = \frac
+                                    {
+                                          \sum_{j \neq i} (Y_{2j} - X_{2j}^T\beta_2)
+                                          K_h\left(
+                                                \frac{(X_{1i} - X_{1j})^T \beta_1}{h}
+                                          \right)
+                                    }{
+                                          \sum_{j \neq i} 
+                                          K_h\left(
+                                                \frac{(X_{1i} - X_{1j})^T \beta_1}{h}
+                                          \right)
+                                    }
+                  \end{align*}
+                  is a leave-one-out NW estimator of 
+                  $\E(Y_{2i} - X_{2i}^T \beta_2 \mid X_{1i}^T \beta_1)$
+                  \footnote{教科書はleave-one-outになっていない．}
+                  .
+      \end{itemize}
+\end{frame}
+
+\begin{frame}
+      \begin{itemize}
+            \item Their estimator is an extension of a NLLS Heckit estimator, which is based on the equation
+                  \begin{align*}
+                        Y_{2i} = X_{2i}^T \beta_2 + \sigma_{12} \lambda(X_{1i}^T\beta_1) + \epsilon_{2i}.
+                  \end{align*}
+            \item Such estimators \alert{ignore the first equation in the system}.
+            \item This is convenient as it simplifies the estimation.
+            \item However, ignoring relevant information \alert{reduces efficiency}.
+            \item Ichimura and Lee derive the asymptotic normality:
+                  \begin{align*}
+                        \sqrt{n}(\hat{\theta} - \theta) \darrow \text{Normal} (0, A^{-1} \Sigma A^{-1}).
+                  \end{align*}
+            \item They also derive consistent estimators $\hat{A}$ and $\hat{\Sigma}$.
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Gallant and Nychka (1987): Semi-Nonparametric MLE}
+      \begin{itemize}
+            \item Gallant and Nychka suggest approximating the joint density of the error terms 
+                  $f(u_{1i}, u_{2i})$ by a series expansion:
+                  \begin{align*}
+                        \tilde{f}(u_{1i}, u_{2i}) 
+                              = \exp \left[
+                                          -\frac{u_{1i}^2}{2 \sigma_{1}^2}  -\frac{u_{2i}^2}{2 \sigma_{2}^2} 
+                                     \right]
+                                \left[
+                                    \sum_{j=0}^K \sum_{k=0}^K \gamma_{jk} u_{1i}^j u_{2i}^k
+                                \right].
+                  \end{align*}
+            \item $\tilde{f}(u_{1i}, u_{2i})$ is a baseline distribution of a joint normal expression.
+            \item This is accompanied by a power series expansion allowing for a general form of the CDF.
+            \item Using the above joint density formula, we can compute $f(u_{1i}, u_{2i})$ and then
+                  construct a log-likelihood function.
+            \item Maximizing the log-likelihood function, we obtain estimators of $\beta_1$ and other parameters.
+            \item The estimator has consistency under $K \to \infty$, and $\frac{K}{n} \to 0$ as $n \to \infty$.
+      \end{itemize}
+\end{frame}
+
+\begin{frame}
+      \begin{itemize}
+            \item Coppejans and Gallant (2002) show that one can use data-driven methods 
+                  to select the power series expansion terms when estimating $f(u_{1i}, u_{2i})$.
+            \item Newey (1999) proposes a two-step series-based estimation method. 
+                  \begin{itemize}
+                        \item First, estimate $\beta_1$ efficiently.
+                        \item Second, select $\beta_2$ solving an efficient score equation.
+                  \end{itemize}
+            \item For details of nonparametric series methods, see Li and Racine (2007, Chapter 15).
+            \item 教科書にタイポが多いのと，元論文にアクセスできないのとで，不正確な内容が含まれているかもしれないため，
+                  何かおかしい点があれば指摘していただきたいです．
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Heckman (1990): Intercept Estimation}
+      \begin{itemize}
+            \item In the semiparametric Type-2 Tobit model, 
+                  we cannot identify an intercept term, which cannot be separated from $g(\cdot)$.
+            \item One might be interested in the intercept, for example, 
+                  when determining ``wage gaps'' between unionized and non-unionized workers, or
+                  when decomposing wage differentials between different socioeconomic groups, etc $\cdots$.
+      \end{itemize}
+\end{frame}
+
+\begin{frame}
+      \begin{itemize}
+            \item Letting $\mu$ denote the intercept,
+                  we write 
+                  \begin{align*}
+                        Y_{2i}^{\star} = \mu + \tilde{X}_{2i}^T \delta + u_{2i},
+                  \end{align*}
+                  where $X_{2i} = (1, \tilde{X}_{2i}^T)^T$, and $\beta_2 = (\mu, \delta^T)^T$.
+            \item Then, we obtain 
+                  \begin{align*}
+                        \E(Y_{2i} \mid X_i, Y_{1i}=1) = \mu + \tilde{X}_{2i}^T \delta + g(X_{1i}^T\beta_1).
+                  \end{align*}
+            \item Recall the definition of $g(\cdot)$:
+                  \begin{align*}
+                        g(z) = \E(u_{2i} \mid u_{1i} > -z),
+                  \end{align*}
+                  which leads to 
+                  \begin{align*}
+                        &\lim_{z \to \infty} g(z) = \E(u_{2i}) = 0, \text{ or}\\
+                        &\lim_{z \to \infty} \E(Y_{2i} - \tilde{X}_{2i}^T \delta \mid Y_{1i} = 1, X_{1i}^T \beta_1 > z) = \mu.
+                  \end{align*}
+      \end{itemize}
+\end{frame}
+
+\begin{frame}
+      \begin{itemize}
+            \item Heckman (1990) suggests to use the observations such that 
+                  $\E(u_{2i} \mid Y_{1i} =1) = g(X_{1i}^T \beta_1)$, i.e., 
+                  the observations such that $g(\cdot)$ satisfies $g(-\infty) = 0$.
+            \item Thus, $\mu$ can be rewritten as
+                  \begin{align*}
+                        \mu = \E(Y_{2i} - \tilde{X}_{2i}^T \delta \mid Y_{1i}=1, X_{1i}^T\beta_1 > \gamma_n),
+                  \end{align*}
+                  where $\gamma \to \infty$ is a bandwidth.
+            \item This can be estimated by 
+                  \begin{align*}
+                        \tilde{\mu} = \frac{
+                              \sum_{i=1}^n (Y_{2i} - \tilde{X}_{2i}\alert{\hat{\delta}}) Y_{1i} 1(X_{1i}^T \alert{\hat{\beta}_1} > \gamma_n)
+                        }{
+                              \sum_{i=1}^n  Y_{1i} 1(X_{1i}^T \alert{\hat{\beta}_1} > \gamma_n)
+                        }.
+                  \end{align*}
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Extension: Andrews and Schafgans (1998)}
+      \begin{itemize}
+            \item Since the indicator function $1(\cdot)$ is not differentiable,
+                  it is difficult to examine the asymptotic distribution of $\tilde{\mu}$.
+            \item Andrews and Schafgans (1998) suggest to replace the indicator function 
+                  with a smoothed non-decreasing CDF $s(\cdot)$, which satisfies
+                  \begin{align*}
+                        & s(z) = 0 \text{ for } z \leq 0, \\
+                        & s(z) = 1 \text{ for } z \geq b \text{ for some } 0 < b < \infty, \text{ and} \\
+                        & s(\cdot)  \text{ has third bounded derivatives.} 
+                  \end{align*} 
+            \item They estimate $\mu$ by
+                  \begin{align*}
+                        \hat{\mu} = \frac{
+                              \sum_{i=1}^n (Y_{2i} - \tilde{X}_{2i}\alert{\hat{\delta}}) Y_{1i} s(X_{1i}^T \alert{\hat{\beta}_1} > \gamma_n)
+                        }{
+                              \sum_{i=1}^n  Y_{1i} s(X_{1i}^T \alert{\hat{\beta}_1} > \gamma_n)
+                        }.
+                  \end{align*}
+            \item They find that the asymptotic distribution has a non-standard rate, depending on the distribution of $X_{1i}^T \beta_1$.
+      \end{itemize}
+\end{frame}
+
+
+\section{Semiparametric Type-3 Tobit Models}
+
+\begin{frame}{Type-3 Tobit Models}
+      \begin{itemize}
+            \item The Type-3 Tobit model is the four equation system:
+                  \begin{align*}
+                        Y_{1i}^{\star} &= X_{1i}^T \beta_1 + u_{1i},\\
+                        Y_{2i}^{\star} &= X_{2i}^T \beta_2 + u_{2i},\\
+                        Y_{1i}         &= \max\{ Y_{1i}^{\star}, 0 \},\\
+                        Y_{2i}         &= Y_{2i}^{\star} \times 1(Y_{1i} > 0).
+                  \end{align*}
+            \item The difference is that \alert{$Y_{1i}$ is censored} than binary. 
+            \item We observe $Y_{2i}^{\star}$ only when there is no censoring on $Y_{1i}^{\star}$.
+            \item Typically, the second equation is of interest, e.g. the coefficient $\beta_2$. 
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Type-3 Tobit Models: Parametric Approaches}
+      \begin{itemize}
+            \item Parametric approaches to estimate the Type-3 Tobit models impose 
+                  parametric distributional assumptions on the joint distribution of the errors.
+            \item Vella (1992, 1998)
+            \item Wooldridge (1994)
+            \item See an attached file for details.
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Semiparametric Type-3 Tobit Models}
+      \begin{itemize}
+            \item Here we do not assume that the joint distribution of $(u_{1i}, u_{2i})$ is known.
+            \item Instead, we have
+                  $\E(u_{2i} \mid u_{1i}) = g(u_{1i})$,
+                  where $g(\cdot)$ is an unknown function.
+            \item In this case, it is easy to see that 
+                  $\E(Y_{2i} \mid X_i, u_{1i}) = X_{2i}^T \beta_2 + g(u_{1i})$.
+            \item Thus, we obtain 
+                  \begin{align*}
+                        &Y_{2i} = X_{2i}^T \beta_2 + g(u_{1i}) + v_{2i},\\
+                        &\E(v_{2i} \mid u_{1i}, Y_{1i} > 0) = 0.
+                  \end{align*}
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Semiparametric Type-3 Tobit Models: Estimation}
+      \begin{itemize}
+            \item If $u_{1i}$ were known, this is a partially linear model.
+            \item In reality, $u_{1i}$ is unknown.
+            \item We can estimate $u_{1i}$ by Tobit, CLAD, etc $\cdots$.
+            \item Here we review the following estimation methods:
+            \begin{itemize}
+                  \item Li and Wooldridge (2002),
+                  \item Chen (1997),
+                  \item Honore, Kyriazidou and Udry (1997),
+                  \item Lee (1994),
+                  \item the semiparametric Type-2 Tobit estimator besed on Ichimura (1993); and Ichimura and Lee (1991).
+            \end{itemize}
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Li and Wooldridge (2002)}
+      \begin{itemize}
+            \item Li and Wooldridge suggest a multistep method to estimate $\beta_2$.
+            \item \alert{1st Step}: Estimate $\beta_1$, for example, by Powell's (1984) CLAD estimator
+                  \footnote{Powell's CLAD (censored least absolute deviation) estimator will be reviewed below in Chapter 11.}
+                  .
+                  We assume that for the 1st stage 
+                  there is a $\sqrt{n}$-consistent, and asymptotically normally distributed, estimator for $\beta_1$.
+            \item \alert{2nd Step}: Replacing $u_{1i}$ with $\hat{u}_{1i}$,
+                  we implement Robinson's approach to estimate $\beta_2$.
+            \item They establish the $\sqrt{n}$-normality of their estimator $\hat{\beta}_2$:
+                  \begin{align*}
+                        \sqrt{n}(\hat{\beta}_2 - \beta_2) \darrow \text{Normal} (0, \Sigma).
+                  \end{align*}
+            \item $\text{Avar} (\hat{\beta}_2)$ can be consistently estimated.
+      \end{itemize}
+\end{frame}
+
+\begin{frame}
+      \begin{itemize}
+            \item Their estimator does not achieve the semiparametric efficiency bound.
+                  Efficient estimation can usually be achieved by a one-step procedure, 
+                  where $\beta_1$ and $\beta_2$ are estimated simultaneously as in Ai (1997).
+            \item Powell's CLAD estimator is a parametric approach, i.e., 
+                  the generated regressor is estimated from a parametric model.
+                  Ahn and Powell (1993) suggest to estimate $\beta_1$ in the 1st stage using a nonparametric regression model.
+      \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Chen (1997)}
+      
+\end{frame}
+
+\begin{frame}{Honore, Kyriazidou and Udry (1997)}
+      
+\end{frame}
+
+\begin{frame}{Lee (1994)}
+      
+\end{frame}
+
+\begin{frame}{Estimation Based on Ichimura (1993); and Ichimura and Lee (1991)}
+      
+\end{frame}
+
+\begin{frame}{Christofides, Li, Liu and Min (2003): Comparison of the Estimators}
+      
+\end{frame}
+
+\section{Tests for Selection Bias}
+
+\begin{frame}{Tests for Selection Bias}
+      
+\end{frame}
+
+
+\section{Nonparametric Sample Selection Model}
+
+\begin{frame}{Das, Newey, and Vella (2003)}
+      
+\end{frame}
+
+
+
+\section{References}
+
+\begin{frame}{References}
+      \begin{itemize}
+            \item See Bibliography of the textbook for the articles referred in the slides.
+            \item Textbooks and Lecture Notes:
+                  \begin{itemize}
+                        \item Horowitz, J. L. (2009)
+                              \textit{Semiparametric and Nonparametric Methods in Econometrics,}
+                              Springer.
+                        \item Li, Q., and J. S. Racine (2007). 
+                              \textit{Nonparametric Econometrics: Theory and Practice,} 
+                              Princeton University Press.
+                        \item 末石直也 (2015) 『計量経済学：ミクロデータ分析へのいざない』日本評論社．
+                        \item 末石直也 (2024) 『データ駆動型回帰分析：計量経済学と機械学習の融合』日本評論社．
+                        \item ECON 718 NonParametric Econometrics (Bruce Hansen, Spring 2009, University of Wisconsin-Madison).
+                        \item セミノンパラメトリック計量分析（末石直也，2014年度後期，京都大学）．
+                  \end{itemize}
+      \end{itemize}
+\end{frame}
+
+
+
+
+
+
+\end{document}
