@@ -31,6 +31,7 @@
 \usepackage{tcolorbox}
 
 
+
 \begin{document} 
 
 %%%%%講演に関する情報%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,13 +52,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Before showwing the contents of the slides...
-\section{Sample Selection Isuues}
+\section{Sample Selection Issues}
 
 \begin{frame}{Sample Selection}
 
       \begin{itemize}
-            \item Sample selection isuues frequently arise in empirical studies.
-            \item We worry that the impact of treatment for those ``selected as treated'' 
+            \item Sample selection issues frequently arise in empirical studies.
+            \item We concern that the treatment effect for those ``selected as treated'' 
                   will differ from that for persons randomly selected from the general population.
             \item Pioneering parametric approaches to deal with sample selection can be found in Heckman (1976, 1979).
       \end{itemize}
@@ -87,7 +88,7 @@
       \begin{itemize}
             \item The Type-2 Tobit model is a classical selection model introduced by Heckman (1976).
             \item It is conventional to assume that the error terms $(u_{1i}, u_{2i})$ are independent of $X_i = (X_{1i}, X_{2i})$.
-            \item For details of Heckman's estimation procedure, see an attached pdf file.
+            \item For details of Heckman's estimation procedure, see the attached pdf file．
             \item Heckman's estimation is one of the parametric approaches, 
                   as he imposes the following parametric distributional assumptions on the joint distribution of the errors:
                   \begin{align*}
@@ -111,7 +112,7 @@
 
 \begin{frame}{Semiparametric Type-2 Tobit Models}
       \begin{itemize}
-            \item Here we do not impose parametric parametric distributional assumptions on the joint distribution of the errors.
+            \item Here we do not impose parametric distributional assumptions on the joint distribution of the errors.
             \item Assume that $(u_{1i}, u_{2i})$ are independent of $X_i = (X_{1i}, X_{2i})$.
             \item Then, we obtain 
                   \begin{align*}
@@ -155,7 +156,7 @@
                         Y_{2i} = X_{2i}^T \beta_2 + g(Z_i) + \epsilon_{2i},
                   \end{align*}
                   which is a partially linear model. 
-            \item It can be estimated using Robinson's approach.
+            \item This can be estimated using Robinson's approach.
             \item Note that the intercept is absorbed by $g(\cdot)$, 
                   and that it must be excluded from $X_{2i}$
                   \footnote{Recall the identification conditions in semiparametric partially linear models.}
@@ -165,8 +166,8 @@
 
 \begin{frame}{Powell (1987): Feasible Two-Step Estimation}
       \begin{itemize}
-            \item In reality, $Z_i$ is not observed. 
-            \item We implement the following two-steo approach.
+            \item In practice, $Z_i$ is not observed. 
+            \item We implement the following two-step approach.
             \item \alert{1st Step}: Estimate $\beta_1$ 
                   by a semiparametric binary choice estimator, 
                   or by Powell's (1984) CLAD estimator
@@ -188,7 +189,7 @@
                         Y_{2i} = X_{2i} + g(X_{1i}\beta_1) + \epsilon_{2i}
                   \end{align*}
                   for observations $i$ such that $Y_{2i}$ is observed.
-            \item Thier objective function is given by 
+            \item Their objective function is given by 
                   \begin{align*}
                         Q_n(\theta) 
                               = \frac{1}{n} \sum_{i=1}^n
@@ -366,7 +367,7 @@
                         Y_{1i}         &= \max\{ Y_{1i}^{\star}, 0 \},\\
                         Y_{2i}         &= Y_{2i}^{\star} \times 1(Y_{1i} > 0).
                   \end{align*}
-            \item The difference is that \alert{$Y_{1i}$ is censored} than binary. 
+            \item The difference from the Type-2 is that \alert{$Y_{1i}$ is censored} than binary. 
             \item We observe $Y_{2i}^{\star}$ only when there is no censoring on $Y_{1i}^{\star}$.
             \item Typically, the second equation is of interest, e.g. the coefficient $\beta_2$. 
       \end{itemize}
@@ -378,7 +379,7 @@
                   parametric distributional assumptions on the joint distribution of the errors.
             \item Vella (1992, 1998)
             \item Wooldridge (1994)
-            \item See an attached file for details.
+            \item See the attached file for details.
       \end{itemize}
 \end{frame}
 
@@ -400,8 +401,8 @@
 
 \begin{frame}{Semiparametric Type-3 Tobit Models: Estimation}
       \begin{itemize}
-            \item If $u_{1i}$ were known, this is a partially linear model.
-            \item In reality, $u_{1i}$ is unknown.
+            \item If $u_{1i}$ were known, this would be a partially linear model.
+            \item In practice, $u_{1i}$ is unknown.
             \item We can estimate $u_{1i}$ by Tobit, CLAD, etc $\cdots$.
             \item Here we review the following estimation methods:
             \begin{itemize}
@@ -420,7 +421,7 @@
             \item \alert{1st Step}: Estimate $\beta_1$, for example, by Powell's (1984) CLAD estimator
                   \footnote{Powell's CLAD (censored least absolute deviation) estimator will be reviewed below in Chapter 11.}
                   .
-                  We assume that for the 1st stage 
+                  We assume that for the 1st step 
                   there is a $\sqrt{n}$-consistent, and asymptotically normally distributed, estimator for $\beta_1$.
             \item \alert{2nd Step}: Replacing $u_{1i}$ with $\hat{u}_{1i}$,
                   we implement Robinson's approach to estimate $\beta_2$.
@@ -434,7 +435,7 @@
 
 \begin{frame}
       \begin{itemize}
-            \item Their estimator does not achieve the semiparametric efficiency bound.
+            \item Li and Wooldridge's (2002) estimator does not achieve the semiparametric efficiency bound.
                   Efficient estimation can usually be achieved by a one-step procedure, 
                   where $\beta_1$ and $\beta_2$ are estimated simultaneously as in Ai (1997).
             \item Powell's CLAD estimator is a parametric approach, i.e., 
@@ -445,18 +446,91 @@
 
 
 \begin{frame}{Chen (1997)}
-      
+      \begin{itemize}
+            \item Assume that $(U_{1i}, u_{2i})$ is independent of $(X_{1i}, X_{2i})$.
+            \item Under the above assumption, it holds that
+                  \begin{align*}
+                        &\E(Y_{2i} \mid X_{1i}, X_{2i}, u_{1i}>0, X_{1i}^T\beta_1>0, Y_{1i}>0) \\
+                        &\qquad= \E(Y_{2i} \mid u_{1i}>0, X_i) \\
+                        &\qquad= X_{2i}^T \beta_2 + \alpha_0,
+                  \end{align*}
+                  where $\alpha_0$ is a constant. 
+                  Note that $\alpha_0$ is not the intercept of the original model.
+            
+      \end{itemize}
 \end{frame}
+
+\begin{frame}
+      \begin{itemize}
+            \item \alert{1st Step}: Estimate $\beta_1$ consistently 
+                  by Honore and Powell (1984), or by Powell's CLAD.
+                  Let $\hat{\beta}_1$ denote the consistent estimator of $\beta_1$.
+            \item \alert{2nd Step}: Run the following least squares:
+                  \begin{align*}
+                        \min_{\beta_2, \alpha}
+                                \frac{1}{n} \sum_{i=1}^n 
+                                1\{ %trimming
+                                    Y_{1i} - X_{1i}^T \alert{\hat{\beta}_1} > 0,
+                                    X_{1i}^T \alert{\hat{\beta}_1} > 0                                
+                                  \} 
+                                (Y_{2i} - X_{2i}^T \beta_2 - \alpha)^2.
+                  \end{align*}
+            \item A problem arising with Chen's (1997) estimator is that 
+                  it may trim out too many observations, which leads to inefficient estimation.
+            \item Chen (1997) suggests an alternative estimator that trims far fewer data points in finite-sample applications.
+      \end{itemize}
+\end{frame}
+
 
 \begin{frame}{Honore, Kyriazidou and Udry (1997)}
-      
+      \begin{itemize}
+            \item Honore, Kyriazidou and Udry (1997) suggest to relax 
+                  the normality assumption as it can be seen in Heckman (1979).
+            \item Instead, they assume that 
+                  the distribution of the error terms $(u_{1i}, u_{2i})$ 
+                  given regressors $X_i$ is symmetric, 
+                  with arbitary heteroscedasticity permitted.
+            \item In this case, conditional on the sample selection, 
+                  the conditional distribution is no longer symmetric.
+            \item Their basic idea is that 
+                  \alert{
+                  $u_{2i}$ is symmetrically distributed around $0$ 
+                  }
+                  if one estimate $\beta_2$  using 
+                  \alert{
+                  observations for which $-X_{1i}^T \beta_1 < u_{1i} < X_{1i}^T \beta_1$} 
+                  (i.e., $0 < Y_{1i} < 2 X_{1i}^T \beta_1$).
+      \end{itemize}
 \end{frame}
+
+\begin{frame}
+      \begin{itemize}
+            \item Honore, Kyriazidou and Udry (1997) suugest the following estimation method.
+            \item \alert{1st Step}: Estimate $\beta_1$ consistently, 
+                  for example, by Powell's CLAD.
+                  Let $\hat{\beta}_1$ denote the consistent estimator of $\beta_1$.
+            \item \alert{2nd Step}: Run the following least absolute deviations:
+                  \begin{align*}
+                        \min_{\beta_2} \frac{1}{n} \sum_{i=1}^n
+                                       1\{
+                                          0 < Y_{1i} < 2 X_{1i}^T \hat{\beta}_1
+                                       \}
+                                       \mid Y_{2i} - X_{2i}^T \beta_2 \mid.
+                  \end{align*}
+            \item They establish the $\sqrt{n}$-normality of their estimator.
+      \end{itemize}
+\end{frame}
+
 
 \begin{frame}{Lee (1994)}
-      
+      \begin{itemize}
+            \item 
+      \end{itemize}
 \end{frame}
 
-\begin{frame}{Estimation Based on Ichimura (1993); and Ichimura and Lee (1991)}
+
+
+\begin{frame}{Estimation Based on Ichimura (1993); Ichimura and Lee (1991)}
       
 \end{frame}
 
