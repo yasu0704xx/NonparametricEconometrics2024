@@ -29,8 +29,16 @@
 \usepackage{bbm}
 \usepackage{ascmac}
 \usepackage{tcolorbox}
-
-
+\usepackage{tabularray}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{codehigh}
+\usepackage[normalem]{ulem}
+\UseTblrLibrary{booktabs}
+\UseTblrLibrary{siunitx}
+\newcommand{\tinytableTabularrayUnderline}[1]{\underline{#1}}
+\newcommand{\tinytableTabularrayStrikeout}[1]{\sout{#1}}
+\NewTableCommand{\tinytableDefineColor}[3]{\definecolor{#1}{#2}{#3}}
 
 \begin{document} 
 
@@ -489,7 +497,10 @@
             \item Instead, they assume that 
                   the distribution of the error terms $(u_{1i}, u_{2i})$ 
                   given regressors $X_i$ is symmetric, 
-                  with arbitary heteroscedasticity permitted.
+                  with arbitary heteroscedasticity permitted
+                  \footnote{Note that the symmetry condition is neither weaker nor stronger than the independence condition.
+                  }
+                  .
             \item In this case, conditional on the sample selection, 
                   the conditional distribution is no longer symmetric.
             \item Their basic idea is that 
@@ -523,20 +534,59 @@
 
 
 \begin{frame}{Lee (1994)}
+      \begin{figure}
+            \includegraphics[width = 1.0 \textwidth]{material/Lee1994_selection.png}
+      \end{figure}
+\end{frame}
+
+\begin{frame}{Comparing the 4 Estimators}
+      \begin{center}
+      \small{
+            \begin{tabular}{c|cccc}
+                  \hline
+                        & LW & Chen & HKU & Lee \\
+                  \hline
+                  Kernel Methods & Required & - & - & Required \\
+                  Smoothing Parameter Choice & Insensitive & - & - & Insensitive \\
+                  \hline
+            \end{tabular}
+      }
+      \end{center}
       \begin{itemize}
-            \item 
+            \item In general, nonparametric kernel methods are sensitive to the choice of smoothing parameters.
+            \item Lee (1994); Min, Sheu and Wang (2003) suggest by Monte-Carlo simulations that 
+                  the estimators of LW(2002) and Lee (1994) are fairly insensitive to the choice of smoothing parameters.
+            \item The reason is that 
+                  the semiparametric estimators depend on the average of nonparametric estimators, 
+                  which are less sensitive to different values of smoothing parameters than a pointwise nonparametric kernel estimator.
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Christofides, Li, Liu and Min (2003)}
+      \begin{center}
+      \small{
+            \begin{tabular}{c|cccc}
+                  \hline
+                        & LW & Chen & HKU & Lee \\
+                  \hline
+                  Dependence Assumption & Yes & Yes & No & Yes \\
+                  Symmetry Assumption & No & No & Yes & No \\ 
+                  \hline
+            \end{tabular}
+      }
+      \end{center}
+      \begin{itemize}
+            \item ``Dependence Assumption'' means that 
+                  one need to assume that 
+                  $(u_{1i}, u_{2i})$ is independent of $(X_{1i}, X_{2i})$.
+            \item ``Symmetry Assumption'' means that one need to assume that 
+                  the distribution of the error terms $(u_{1i}, u_{2i})$ 
+                  given regressors $X_i$ is symmetric.
+            \item The symmetry condition is neither weaker nor stronger than the independence condition.
       \end{itemize}
 \end{frame}
 
 
-
-\begin{frame}{Estimation Based on Ichimura (1993); Ichimura and Lee (1991)}
-      
-\end{frame}
-
-\begin{frame}{Christofides, Li, Liu and Min (2003): Comparison of the Estimators}
-      
-\end{frame}
 
 \section{Tests for Selection Bias}
 
