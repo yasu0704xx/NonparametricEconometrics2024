@@ -43,8 +43,8 @@
 \begin{document} 
 
 %%%%%講演に関する情報%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Selectivity Models and Censored Models} 
-\subtitle{Li and Racine (2007, Chapters 10 and 11)}
+\title{Selectivity Models} 
+\subtitle{Li and Racine (2007, Chapter 10)}
 \author{Yasuyuki Matsumura}
 \institute{Graduate School of Economics, Kyoto University}
 \date{\today} % 日付を自動で挿入
@@ -87,7 +87,7 @@
                   \end{align*}
             \item The variables $(Y_{1i}^{\star}, Y_{2i}^{\star})$ are latent (unobserved).
             \item The observed variables are $( Y_{1i}, Y_{2i}, X_{1i}, X_{2i})$.
-            \item Effectively, $Y_{2i}^{\star}$ is only when $Y_{1i} = 1$, equivalently when $Y_{1i}^{\star} > 0$.
+            \item Effectively, $Y_{2i}^{\star}$ is observable only when $Y_{1i} = 1$, equivalently when $Y_{1i}^{\star} > 0$.
             \item Typically, the second equation is of interest, e.g. the coefficient $\beta_2$. 
       \end{itemize}
 \end{frame}
@@ -455,7 +455,7 @@
 
 \begin{frame}{Chen (1997)}
       \begin{itemize}
-            \item Assume that $(U_{1i}, u_{2i})$ is independent of $(X_{1i}, X_{2i})$.
+            \item Assume that $(u_{1i}, u_{2i})$ is independent of $(X_{1i}, X_{2i})$.
             \item Under the above assumption, it holds that
                   \begin{align*}
                         &\E(Y_{2i} \mid X_{1i}, X_{2i}, u_{1i}>0, X_{1i}^T\beta_1>0, Y_{1i}>0) \\
@@ -497,10 +497,7 @@
             \item Instead, they assume that 
                   the distribution of the error terms $(u_{1i}, u_{2i})$ 
                   given regressors $X_i$ is symmetric, 
-                  with arbitary heteroscedasticity permitted
-                  \footnote{Note that the symmetry condition is neither weaker nor stronger than the independence condition.
-                  }
-                  .
+                  with arbitary heteroscedasticity permitted.
             \item In this case, conditional on the sample selection, 
                   the conditional distribution is no longer symmetric.
             \item Their basic idea is that 

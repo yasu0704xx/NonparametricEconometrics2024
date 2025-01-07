@@ -1,0 +1,157 @@
+\documentclass[xcolor=svgnames,dvipdfmx,cjk]{beamer} 
+\AtBeginDvi{\special{pdf:tounicode 90ms-RKSJ-UCS2}} 
+\usetheme[progressbar=frametitle]{metropolis}
+\setbeamertemplate{headline}[miniframes]
+\setbeamercolor{background canvas}{bg=Snow} 
+\setbeamercolor{frametitle}{fg=white, bg=gray!40!black}  
+\setbeamercolor{section in head/foot}{fg=pink!70!red, bg=gray!30!black}
+\setbeamercolor{alerted text}{fg=orange!50!red} 
+\usefonttheme{professionalfonts}
+\setbeamertemplate{theorems}[numbered]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{proposition}[thm]{Proposition}
+\theoremstyle{example}
+\newtheorem{exam}[thm]{Example}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{question}[thm]{Question}
+\newtheorem{prob}[thm]{Problem}
+\def\Avar{\text{Avar}}
+\def\var{\text{var}}
+\def\Var{\text{Var}}
+\def\cov{\text{cov}}
+\def\Cov{\text{Cov}}
+\def\E{\mathbb{E}}
+\def\R{\mathbb{R}}
+\def\P{\mathbb{P}}
+\def\parrow{\xrightarrow{p}}
+\def\darrow{\xrightarrow{d}}
+\def\plim{\text{plim }}
+\usepackage{bbm}
+\usepackage{ascmac}
+\usepackage{tcolorbox}
+
+%%%%%%ナビゲーションバー%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\useoutertheme{miniframes}
+%\setbeamertemplate{headline}[miniframes theme]
+%\setbeamertemplate{mini frames}[circle]
+
+%\setbeamertemplate{headline}
+%{%
+%  \begin{beamercolorbox}{section in head/foot}
+%    \vskip2pt\insertnavigation{\paperwidth}\vskip2pt
+%  \end{beamercolorbox}%
+%}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document} 
+
+%%%%%講演に関する情報%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Censored Models} 
+\subtitle{Li and Racine (2007, Chapter 11)}
+\author{Yasuyuki Matsumura}
+\institute{Graduate School of Economics, Kyoto University}
+\date{\today} % 日付を自動で挿入
+
+%%%%%タイトルページ%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}                  
+\titlepage            
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Parametric Censored Models}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Semiparametric Censored Regression Models}
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Nonparametric Heteroscedasticity}
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{The Univariate Kaplan-Meier CDF Estimator}
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{The Multivariate Kaplan-Meier CDF Estimator}
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Nonparametric Censored Regression}
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\begin{frame}{References}
+  \begin{itemize}
+    \item Textbooks and Lecture Notes:
+    \begin{itemize}
+      \item Horowitz, J. L. (2009)
+            \textit{Semiparametric and Nonparametric Methods in Econometrics,}
+            Springer.
+      \item Li, Q., and J. S. Racine (2007). 
+            \textit{Nonparametric Econometrics: Theory and Practice,} 
+            Princeton University Press.
+      \item Serfling, R. J. (1980)
+            \textit{Approximation Theorems of Mathematical statistics.} Wiley.
+      \item van der Vaart, A. W. (2000)
+            \textit{Asymptotic Statistics.} Cambridge.
+      \item 末石直也 (2024) 『データ駆動型回帰分析：計量経済学と機械学習の融合』日本評論社．
+      \item 西山慶彦，人見光太郎 (2023) 『ノン・セミパラメトリック統計解析（理論統計学教程：数理統計の枠組み）』共立出版．
+      \item ECON 718 NonParametric Econometrics (Bruce Hansen, Spring 2009, University of Wisconsin-Madison).
+      \item セミノンパラメトリック計量分析（末石直也，2014年度後期，京都大学）．
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+
+
+\end{document}
