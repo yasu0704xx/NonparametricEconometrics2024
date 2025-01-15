@@ -2,7 +2,7 @@
 \AtBeginDvi{\special{pdf:tounicode 90ms-RKSJ-UCS2}} 
 \usetheme[progressbar=frametitle]{metropolis}
 \setbeamertemplate{headline}[miniframes]
-\setbeamercolor{background canvas}{bg=Snow} 
+\setbeamercolor{background canvas}{bg=White} 
 \setbeamercolor{frametitle}{fg=white, bg=gray!40!black}  
 \setbeamercolor{section in head/foot}{fg=pink!70!red, bg=gray!30!black}
 \setbeamercolor{alerted text}{fg=orange!50!red} 
@@ -21,6 +21,7 @@
 \def\cov{\text{cov}}
 \def\Cov{\text{Cov}}
 \def\E{\mathbb{E}}
+\def\H{\mathbb{H}}
 \def\R{\mathbb{R}}
 \def\P{\mathbb{P}}
 \def\parrow{\xrightarrow{p}}
@@ -585,17 +586,101 @@
 
 
 
-\section{Tests for Selection Bias}
+\section{Tests for the Exisitence of Sample Selection and Model Specification}
 
-\begin{frame}{Tests for Selection Bias}
-      
+\begin{frame}{Test for the Exisitence of Sample Selection}
+      \begin{itemize}
+            \item Let us test whether sample selection exists or not.
+            \item Consider the following null hypothesis:
+                  \begin{align*}
+                        &\H_{0}^a: \, \E(u_2|u_1) = 0, \\
+                        &\H_{1}^a: \, \E(u_2|u_1) \neq 0.
+                  \end{align*}
+            \item A test statistic for $\H_{0}^a$ is proposed 
+                  by Li and Wang (1998); and Zheng (1996):
+                  \begin{align*}
+                        \tilde{I}_n^a 
+                              = \frac{1}{n_1 (n_1 - 1)}
+                                \sum_{i=1}^{n_1} \sum_{j \neq i}^{n_1}
+                                \hat{u}_{2i} \hat{u}_{2j} K_h (\hat{u}_{1i} \hat{u}_{1j}),
+                  \end{align*}
+                  where $n_1$ denotes the number of observations with $Y_{2i} > 0$, and 
+                  $\hat{u}_{1i} \text{ and } \hat{u}_{2i}$ are the OLS residuals.
+      \end{itemize}
 \end{frame}
 
+\begin{frame}
+      \begin{itemize}
+            \item Under conditions 10.1, 10.2, and 10.3, we obtain 
+                  (as $n_1 \to \infty, \, h \to 0,\, n_1 h \to \infty$),
+                  \begin{align*}
+                        n_1 h^{\frac{1}{2}}\frac{\tilde{I}_n^a}{\hat{\sigma}_a} \darrow \text{Normal} (0,1) \text{ under } \H_{0}^a
+                  \end{align*}
+                  and 
+                  \begin{align*}
+                        \P \left(
+                              \left|
+                                    n_1 h^{\frac{1}{2}}\frac{\tilde{I}_n^a}{\hat{\sigma}_a}  
+                              \right| > C
+                        \right) \to 1 \text{ for any } C>0 \text{ under } \H_{1}^a,
+                  \end{align*}
+                  where $\hat{\sigma}_a^2 
+                              = \dfrac{2h}{n_1(n_1 - 1)}
+                                \sum_{i=1}^{n_1} \sum_{j \neq i}^{n_1}
+                                \hat{u}_{2i}^2 \hat{u}_{2j}^2 K_h^2 (\hat{u}_{1i} - \hat{u}_{1j})$.
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Test for Model Specification}
+      \begin{itemize}
+            \item Suppose that we reject $\H_0^a$, that is, we consider there exists sample selection.
+            \item Consider the following null hypothesis:
+                  \begin{align*}
+                        &\H_{0}^b: \, \E(Y_2|X_2, u_1) = X_2^T \beta_2 + u_1 \gamma, \\
+                        &\H_{1}^a: \, \E(Y_2|X_2, u_1) = X_2^T \beta_2 + g(u_1) \text{ with } g(u_1) \neq u_1 \gamma.
+                  \end{align*}
+            \item A test statistic for $\H_{0}^a$ is proposed 
+                  by Li and Wang (1998):
+                  \begin{align*}
+                        \tilde{I}_n^b 
+                              = \frac{1}{n_1 (n_1 - 1)}
+                                \sum_{i=1}^{n_1} \sum_{j \neq i}^{n_1}
+                                \tilde{u}_{2i} \tilde{u}_{2j} K_h (\hat{u}_{1i} \hat{u}_{1j}),
+                  \end{align*}
+                  where $n_1$ denotes the number of observations with $Y_{2i} > 0$, and 
+                  $\hat{u}_{1i} \text{ and } \tilde{u}_{2i}$ are the residuals 
+                  from OLS $\beta_1$ and Li and Wooldridge's (2002) $\beta_2$, respectively.
+      \end{itemize}
+\end{frame}
+
+\begin{frame}
+      \begin{itemize}
+            \item Under conditions 10.1, 10.2, and 10.3, we obtain 
+                  (as $n_1 \to \infty, \, h \to 0,\, n_1 h \to \infty$),
+                  \begin{align*}
+                        n_1 h^{\frac{1}{2}}\frac{\tilde{I}_n^b}{\hat{\sigma}_b} \darrow \text{Normal} (0,1) \text{ under } \H_{0}^b
+                  \end{align*}
+                  and 
+                  \begin{align*}
+                        \P \left(
+                              \left|
+                                    n_1 h^{\frac{1}{2}}\frac{\tilde{I}_n^b}{\hat{\sigma}_b}  
+                              \right| > C
+                        \right) \to 1 \text{ for any } C>0 \text{ under } \H_{1}^b,
+                  \end{align*}
+                  where $\hat{\sigma}_b^2 
+                              = \dfrac{2h}{n_1(n_1 - 1)}
+                                \sum_{i=1}^{n_1} \sum_{j \neq i}^{n_1}
+                                \tilde{u}_{2i}^2 \tilde{u}_{2j}^2 K_h^2 (\hat{u}_{1i} - \hat{u}_{1j})$.
+      \end{itemize}
+\end{frame}
 
 \section{Nonparametric Sample Selection Model}
 
 \begin{frame}{Das, Newey, and Vella (2003)}
-      
+      \begin{itemize}
+            \item See Das, Newey, and Vella (2003); and Li and Racine (2007, Section 10.4).
+      \end{itemize}
 \end{frame}
 
 
