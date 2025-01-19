@@ -168,7 +168,7 @@
             \item This can be estimated using Robinson's approach.
             \item Note that the intercept is absorbed by $g(\cdot)$, 
                   and that it must be excluded from $X_{2i}$
-                  \footnote{Recall the identification conditions in semiparametric partially linear models.}
+                  \footnote{Recall the identification conditions of semiparametric partially linear models.}
                   .
       \end{itemize}
 \end{frame}
@@ -625,7 +625,7 @@
                         \right) \to 1 \text{ for any } C>0 \text{ under } \H_{1}^a,
                   \end{align*}
                   where $\hat{\sigma}_a^2 
-                              = \dfrac{2h}{n_1(n_1 - 1)}
+                              = \displaystyle\frac{2h}{n_1(n_1 - 1)}
                                 \sum_{i=1}^{n_1} \sum_{j \neq i}^{n_1}
                                 \hat{u}_{2i}^2 \hat{u}_{2j}^2 K_h^2 (\hat{u}_{1i} - \hat{u}_{1j})$.
       \end{itemize}
@@ -637,7 +637,7 @@
             \item Consider the following null hypothesis:
                   \begin{align*}
                         &\H_{0}^b: \, \E(Y_2|X_2, u_1) = X_2^T \beta_2 + u_1 \gamma, \\
-                        &\H_{1}^a: \, \E(Y_2|X_2, u_1) = X_2^T \beta_2 + g(u_1) \text{ with } g(u_1) \neq u_1 \gamma.
+                        &\H_{1}^b: \, \E(Y_2|X_2, u_1) = X_2^T \beta_2 + g(u_1) \text{ with } g(u_1) \neq u_1 \gamma.
                   \end{align*}
             \item A test statistic for $\H_{0}^a$ is proposed 
                   by Li and Wang (1998):
@@ -669,7 +669,7 @@
                         \right) \to 1 \text{ for any } C>0 \text{ under } \H_{1}^b,
                   \end{align*}
                   where $\hat{\sigma}_b^2 
-                              = \dfrac{2h}{n_1(n_1 - 1)}
+                              = \displaystyle\frac{2h}{n_1(n_1 - 1)}
                                 \sum_{i=1}^{n_1} \sum_{j \neq i}^{n_1}
                                 \tilde{u}_{2i}^2 \tilde{u}_{2j}^2 K_h^2 (\hat{u}_{1i} - \hat{u}_{1j})$.
       \end{itemize}
@@ -682,27 +682,6 @@
             \item See Das, Newey, and Vella (2003); and Li and Racine (2007, Section 10.4).
       \end{itemize}
 \end{frame}
-
-
-
-\section{References}
-
-\begin{frame}{References}
-      \begin{itemize}
-            \item Textbooks and Lecture Notes:
-                  \begin{itemize}
-                        \item Li, Q., and J. S. Racine (2007). 
-                              \textit{Nonparametric Econometrics: Theory and Practice,} 
-                              Princeton University Press.
-                        \item 末石直也 (2015) 『計量経済学：ミクロデータ分析へのいざない』日本評論社．
-                        \item 末石直也 (2024) 『データ駆動型回帰分析：計量経済学と機械学習の融合』日本評論社．
-                        \item 西山慶彦，新谷元嗣，川口大司，奥井亮 (2019) 『計量経済学』有斐閣．
-                        \item ECON 718 NonParametric Econometrics (Bruce Hansen, Spring 2009, University of Wisconsin-Madison).
-                        \item セミノンパラメトリック計量分析（末石直也，2014年度後期，京都大学）．
-                  \end{itemize}
-      \end{itemize}
-\end{frame}
-
 
 
 

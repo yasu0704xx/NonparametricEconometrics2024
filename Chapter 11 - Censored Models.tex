@@ -20,6 +20,7 @@
 \def\Var{\text{Var}}
 \def\cov{\text{cov}}
 \def\Cov{\text{Cov}}
+\def\med{\text{med}}
 \def\E{\mathbb{E}}
 \def\R{\mathbb{R}}
 \def\P{\mathbb{P}}
@@ -48,7 +49,7 @@
 %%%%%講演に関する情報%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{Censored Models} 
 \subtitle{Li and Racine (2007, Chapter 11)}
-\author{Yasuyuki Matsumura}
+\author{Yasuyuki Matsumura (yasu0704xx [at] gmail.com)}
 \institute{Graduate School of Economics, Kyoto University}
 \date{\today} % 日付を自動で挿入
 
@@ -64,47 +65,388 @@
 
 \section{Parametric Censored Models}
 
+\begin{frame}{Type-1 Tobit Model}
+      \begin{itemize}
+            \item Consider the following latent variable model:
+                  \begin{align*}
+                        Y_i^{\star} = X_i^T \beta + \epsilon_i, \quad i=1, \cdots n,
+                  \end{align*}
+                  where $X_i \in \R^q$ is an explanatory vector, 
+                  $\beta$ is a $q \times 1$ vector of coefficients, and
+                  $\epsilon_i$ is a mean zero disturbance term.
+            \item $Y_i^{\star}$ is a latent variable, which we cannot observe.
+                  Instead, we observe 
+                  \begin{align*}
+                        Y_i   &= Y_i^{\star} 1(Y_i^{\star} > 0) \\
+                              &= \max\{ X_i^T \beta + \epsilon_i, \, 0 \}.
+                  \end{align*}
+            \item Note that the ``cutoff'' is set equal to $0$ without loss of generality.
+                  That is, we expect that $Y_i$ ($\epsilon_i$) is censored at $0$ (resp. $-X_i^T\beta$). 
+      \end{itemize}
+\end{frame}
 
+\begin{frame}{Parametric Approach}
+      \begin{itemize}
+            \item Popular parametric approaches include MLE and Heckit.
+                  \footnote{Amemiya (1984)：Tobitモデルのサーベイ論文；Amemiya (1985)：教科書．}  
+            \item These approaches demand the following distributional assumpution:
+                  \begin{align*}
+                        \epsilon_i | X_i \sim \text{Normal}(0, \sigma^2).
+                  \end{align*}
+                  Since $Y_i^{\star}$ is censored, for example, by top coding, 
+                  the distribution of $Y_i^{\star}$ cannot be identified 
+                  without this assumpution.
+            \item In other words, these parametric approaches do not allow for the heteroscedasticity of $\epsilon_i$
+                  (Arabmazar and Schmidt 1981).
+      \end{itemize}  
+\end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Semiparametric Type-1 Tobit Models}
+
+\begin{frame}{Semiparametric Type-1 Tobit Models}
+      \begin{itemize}
+            \item We introduce the following semiparametric type-1 Tobit model:
+                  \begin{align*}
+                        Y_i^{\star} &= X_i^T \beta + \epsilon_i, \\
+                        Y_i         &=  Y_i^{\star} 1( Y_i^{\star} > 0).
+                  \end{align*}
+            \item For identifying the moments of $Y_i^{\star}$, 
+                  we need additional assumputions.
+            \item Powell (1984) proposes to assume that 
+                  $\med(\epsilon_i|X_i) = 0$.
+            \item Chen and Khan (2000) proposes a estimation procedure 
+                  which requires weaker assumputions for identification than Powell (1984).
+      \end{itemize}
+\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Semiparametric Censored Regression Models}
 
+\begin{frame}{Powell (1984): CLAD}
+      \begin{itemize}
+            \item Consider the semiparametric type-1 Tobit model:
+                  \begin{align*}
+                        Y_i^{\star} &= X_i^T \beta + \epsilon_i, \\
+                        Y_i         &=  Y_i^{\star} 1( Y_i^{\star} > 0) = \max\{Y_i^{\star}, 0\}.
+                  \end{align*}
+            \item Assume that 
+                  $ \med(\epsilon_i|X_i) = 0 $.
+                  Noting that the ``monotonicity'' of median
+                  \footnote{maxとmedの順番を入れ替えても大丈夫ということ．maxでなくても，単調変換なら入れ替え可．},
+                  we obtain 
+                  $\med(Y_i|X_i) = \max\{ \med(Y_i^{\star}|X_i), 0\} = \max\{X_i^T\beta, 0\}$,
+                  which implies that the above model can be rewritten as
+                  \begin{align*}
+                        Y_i &= \max\{X_i^T \beta, 0\} + \epsilon_i, \\
+                        \med(\epsilon_i|X_i) &= 0.
+                  \end{align*}
+      \end{itemize}
+\end{frame}
 
+\begin{frame}
+      \begin{itemize}
+            \item Powell (1984) proposes the following 
+                  \alert{censored least absolute deviations estimator}:
+                  \begin{align*}
+                        \hat{\beta}_{clad} 
+                              &= \arg\min_{\beta} \frac{1}{n} \sum_{i=1}^n |Y_i - \max\{X_i^T\beta , 0\}| \\
+                              &= \arg\min_{\beta} \frac{1}{n} \sum_{i=1}^n 1(X_i^T\beta > 0)|Y_i - X_i^T \beta|.
+                  \end{align*}
+            \item Computation is sometimes complex
+                  \footnote{$\beta$が2つの役割をもつことに起因する：データの選択，係数の値の決定．}.
+                  See Buchinsky (1994); Khan and Powell (2001).
+            \item Powell (1984) establishes the $\sqrt{n}$-consistency and asy. normality:
+                  \begin{align*}
+                        \sqrt{n} (\hat{\beta}_{clad} - \beta) \darrow \text{Normal} (0, V_{clad}^{-1}),
+                  \end{align*}
+                  where 
+                  \begin{align*}
+                        V_{clad} = 4 f^{2}(0) \E[1(X_i^T\beta >0) X_i X_i^T ]
+                  \end{align*}
+                  and $f(0)$ is the density of $\epsilon_i$ at the origin.
+      \end{itemize}
+\end{frame}
 
+\begin{frame}
+      \begin{itemize}
+            \item Variance estimation can be implemented as follows.
+            \item Assume that $\epsilon_i$ is independent of $X_i$.
+            \item Note that 
+                  \begin{align*}
+                        f(0) &= \lim_{h \to 0} \P(0 \leq \epsilon_i < h) \\
+                             &= \lim_{h \to 0} \P(0 \leq \epsilon_i < h | X_i^T\beta>0).
+                  \end{align*}
+            \item Powell suggests to estimate $f(0)$ by
+                  \begin{align*}
+                        \hat{f}(0) = \frac{
+                              1(X_i^T \hat{\beta}_{clad} > 0) 1(0 \leq \hat{\epsilon}_i < h)
+                        }{
+                              h \sum_{i=1}^n 1(X_i^T \hat{\beta}_{clad} > 0)
+                        }.
+                  \end{align*}
+      \end{itemize}
+\end{frame}
 
+\begin{frame}{\alert{Extension 1}: Estimation of $f(0)$}
+      \begin{itemize}
+            \item Horowitz and Neumann (1987) propose an alternative estimator of $f(0)$.
+            \item To estimate $f(0)$, they use data with 
+                  $X_i^T \hat{\beta}_{clad} \in \left[ -\frac{h}{2}, \frac{h}{2} \right]$.
+            \item Their estimator is given by 
+                  \tiny{
+                  \begin{align*}
+                        \hat{f}(0) = \frac{
+                              \sum_{i=1}^n 
+                              1\left(-\frac{h}{2}\leq \hat{\epsilon}_i \leq \frac{h}{2}\right) 
+                              1\left(Y_i > 0\right)
+                        }{
+                              h \left[
+                                    \sum_{i=1}^n 
+                                    1(X_i^T \hat{\beta}_{clad} > \frac{h}{2}) 
+                                    + \frac{1}{2} \left( 1 + \frac{X_i^T \hat{\beta}_{clad}}{\frac{h}{2}}\right)
+                                    1\left(-\frac{h}{2} < X_i^T \hat{\beta}_{clad} \leq \frac{h}{2}\right)
+                              \right].
+                        }
+                  \end{align*}
+                  }
+            \item Hall and horowitz (1990) suggest to replace the indicator function 
+                  by a kernel function.
+      \end{itemize}
+\end{frame}
 
+\begin{frame}{\alert{Extension 2}: Newey and Powell (1990)}
+      \begin{itemize}
+            \item Newey and Powell (1990) modify the objective function above:
+                  \begin{align*}
+                        \hat{\beta}_{np} 
+                              = \arg\min_{\beta} 
+                                \sum_{i=1}^n
+                                w_i |Y_i - \max\{X_i^T \beta, 0\}|.
+                  \end{align*}
+            \item They show that the optimal weight is 
+                  $w_i = 2 f(0|X_i)$.
+                  The asy. variance is $\{ 4\E[1(X_i^T\beta>0) f^2(0|X_i)X_iX_i^T] \}^{-1}$.
+            \item Their estimator achieves \alert{the semiparametric efficiency bound} 
+                  for the censored regression model under $\med(\epsilon_i|X_i)=0$.
+            \item If $\epsilon_i$ is independent of $X_i$, then $f(0|X_i) = f(0)$, 
+                  which implies that $\hat{beta}_{np} = \hat{\beta}_{clad}$.
+      \end{itemize}      
+\end{frame}
 
+\begin{frame}{\alert{Extension 3}: Other Approaches}
+      \begin{itemize}
+            \item Powell (1986): Additionally assume the symmetry assumption.
+            \item Newey (1991): GMM-based estimation. Assume the symmetry assumption for efficiency.
+            \item Honore and Powell (1994): Identically CLAD; Identically censored least squares.
+      \end{itemize}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \section{Nonparametric Heteroscedasticity}
 
+\begin{frame}{Problems Arising with Powell's CLAD}
+      \begin{itemize}
+            \item Recall that Powell's CLAD requires 
+                  $\med(\epsilon_i|X_i)=0$,
+                  which can be interpreted as restrictive
+                  \footnote{とはいえ，中央値の識別は，期待値の識別よりもはるかに緩い条件で済むので，
+                  CLADやそれを拡張した打ち切りデータに対する分位点回帰をやろうという話になる．}
+                  .
+            \item $\Avar(\hat{\beta}_{clad})$ is represented using 
+                  $\E[1(X_i^T\beta>0)X_i X_i^T]^{-1}$,
+                  which cannot be defined if $\E[1(X_i^T\beta>0)X_i X_i^T]$ is not of full rank.
+                  This problem often arises under heavy censoring
+                   (i.e., when $X_i^T\beta$ is negative with high probability).
+      \end{itemize}
+\end{frame}
 
 
+\begin{frame}{Chen and Khan (2000)}
+      \begin{itemize}
+            \item Chen and Khan (2000) consider estimation procedures for 
+                  heteroscedastic censored linear regression models.
+            \item Their approach requires weaker identification conditions than Powell's CLAD.
+            \item They also allow for various degrees of censoring.
+            \item Their main idea is that \alert{they model the error term as the product of 
+                  a homoscedastic error and a scale function of $X_i$ that can be estimated using kernel methods}.
+      \end{itemize}
+\end{frame}
 
+\begin{frame}
+      \begin{itemize}
+            \item They assume that 
+                  \begin{align*}
+                        &\epsilon_i = \sigma(X_i)v_i, \\
+                        &\P(v_i \leq \lambda|X_i) \equiv \P(v_i \leq \lambda) \text{ for any } \lambda \in \R , X_i \, a.s.,\\
+                        &\E(v_i)=0, \Var(v_i)=1. 
+                  \end{align*}
+            \item Recalling that $Y_i = \max\{X_i^T\beta + \epsilon_i, 0\}$, we obtain
+                  \begin{align*}
+                        &\text{For any } \alpha \in (0,1),\\
+                        &q_{\alpha}(X_i) = \max\{X_i^T\beta + c_{\alpha}\sigma(X_i), 0\},
+                  \end{align*}
+                  where
+                  \begin{align*}
+                        & q_{\alpha}(\cdot) \text{ denotes the } \alpha \text{-th quantile of } Y_i \text{ given } X_i, \\
+                        & c_{\alpha} \text{ denotes the } \alpha \text{-th quantile from the (unknown) distribution of } v_i.
+                  \end{align*}
+            \item Thus, for any $q_{\alpha_j}(X_i) > 0$ for two distinct $\alpha_1 \neq \alpha_2$, we have
+                  \begin{align*}
+                        q_{\alpha_j}(X_i) = X_i^T \beta + c_{\alpha_j} \sigma(X_i) \text{ for } j=1,\,2.
+                  \end{align*}
+      \end{itemize}
+\end{frame}
 
+\begin{frame}{Chen and Khan (2000): Estimation}
+      \begin{itemize}
+            \item Chen and Khan (2000) propose two estimators of $\beta$. 
+                  One is assuming that $v_i$ has a known parametric distribution.
+                  The other does not require such assumptions.
+            \item Here we focus on the latter one.
+            \item Notations:
+                  \begin{align*}
+                        \bar{q}_{\alpha}(\cdot) &= \frac{q_{\alpha_2}(\cdot) + q_{\alpha_1}(\cdot)}{2}, \\
+                        \Delta q_{\alpha}(\cdot) &= q_{\alpha_2}(\cdot) - q_{\alpha_1}(\cdot), \\
+                        \bar{c} &= \frac{c_{\alpha_2} + c_{\alpha_1}}{2}, \\
+                        \Delta c &= c_{\alpha_2} - c_{\alpha_1}, \\
+                        \gamma_1 &= \frac{\bar{c}}{\Delta c} \text{: we treat } \gamma_1 \text{ as a nuisance parameter.}
+                  \end{align*}
+            \item From $ q_{\alpha_j}(X_i) = X_i^T \beta + c_{\alpha_j} \sigma(X_i)$,
+                  one can show that 
+                  \begin{align*}
+                        \bar{q}_{\alpha}(X_i) = X_i^T \beta + \gamma_1 \Delta q_{\alpha}(X_i) \text{ for } j=1,2.
+                  \end{align*}
+      \end{itemize}
+\end{frame}
 
+\begin{frame}
+      \begin{itemize}
+            \item Chen and Khan (2000)'s estimation procedures include the following steps:
+            \item \alert{1st step}: Estimate $q_{\alpha_j}(\cdot)$ nonpaeametrically. 
+                  Let $\hat{q}_{\alpha_j}(\cdot)$ denote the nonparametric estimator of $q_{\alpha_j}(\cdot)$.
+            \item \alert{2nd step}: Regress $\hat{\bar{q}}_{\alpha}(\cdot)$ on $X_i$ and $\Delta \hat{q}_{\alpha}(\cdot)$.
+            \item That is, the estimators of $\beta$ and $\gamma_1$ are given by minimizing (w.r.t. $\beta$ and $\gamma_1$)
+                  \begin{align*}
+                        \frac{1}{n} 
+                        \sum_{i=1}^n 
+                        \tau(X_i) 
+                        w\left( \hat{q}_{\alpha_1}(X_i) \right)
+                        [ \hat{\bar{q}}(X_i) - X_i^T\beta - \gamma_1 \Delta \hat{q}_{\alpha}(X_i) ]^2 ,
+                  \end{align*}
+                  where $w(\cdot)$ is a smoothing weight function
+                  \footnote{$1( \hat{q}_{\alpha_1}(X_i)>0)$のかわりのようなもの．},
+                  $\tau(\cdot)$ is a trimming function having compact support.
+            \item Under certain regularity conditions, 
+                  their estimator $\hat{\beta}$ have the parametric $\sqrt{n}$ rate of convergence,
+                  and is distributed asymptotically normally.
+      \end{itemize}
+\end{frame}
 
-
+\begin{frame}{\alert{Extension}: Cosslett (2004)}
+      \begin{itemize}
+            \item Cosslett (2004) proposes asymptotically efficient likelihood-based semiparametric estimators 
+                  for censored and truncated regression models.
+            \item See the paper for details. 
+      \end{itemize}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{The Univariate Kaplan-Meier CDF Estimator}
 
+\begin{frame}{Kaplan and Meier (1958): Product-Limit Estimator}
+      \begin{itemize}
+            \item There exists a class of semiparametric estimators 
+                  that employ the so-called Kaplan-Meier estimator of a CDF
+                  in the presence of censored data.
+            \item \alert{Setup}: Consider the following estimands:
+                  \begin{align*}
+                        \text{CDF: }& F(\cdot), \text{ or}\\
+                        \text{Survival function: }& S(\cdot) = 1 - F(\cdot).
+                  \end{align*}
+            \item Let $\{Y_i\}_{i=1}^n$ be the random sample of interest drawn from $F(\cdot)$.
+            \item Let $\{L_i\}_{i=1}^n$ be random/fixed censoring variables, that are independent of $\{Y_i\}_{i=1}^n$.
+            \item Define $Z_i = \min\{Y_i, L_i\}$, and $\delta_i = 1(Y_i \leq L_i)$. 
+                  Suppose that we observe only $Z_i$ and $\delta_i$. 
+                  By construction, 
+                  we cannot observe the exact value of $Y_i$ if $\delta_i = 0$.
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{cont'd}
+      \begin{itemize}
+            \item Define the ascending points $c_0, c_1, \cdots, c_m$ 
+                  at which the CDF $F(\cdot)$ or $S(\cdot)$ is to be evaluated.
+            \item Define $I_j = 1(Y > c_j)$.
+            \item Noting that $c$'s are ascending 
+                  and so that $I_{j-1} = 1$ if $I_j = 1$, 
+                  we obtain conditional survival probability:
+                  \begin{align*}
+                        \P(I_j=1 | I_{j-1}=1) 
+                              = \frac{\P(I_j=1)}{\P(I_{j-1}=1)}
+                              = 1 - \frac{\P(c_{j-1} < Y \leq c_j)}{\P(Y>c_{j-1})}.
+                  \end{align*}
+            \item By choosing $c_0$ small enough (say, below the smallest observation in the data),
+                  we can always ensure that $\P(I_0=1)=1$. 
+                  That is, all items survive initially.
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Estimation: In the Case of No Censoring}
+      \begin{itemize}
+            \item We can estimate $\P(I_j=1 | I_{j-1}=1)$ by the iteration of
+                  \begin{align*}
+                        \tilde{\P}(I_j=1|I_{j-1}=1)
+                              &= \frac{\tilde{\P}(I_j=1)}{\tilde{\P}(I_{j-1}=1)} 
+                               = \frac{\# \text{ of } Y_i > c_j}{\# \text{ of } Y_i > c_{j-1}} \\
+                              &= 1- \frac{\# \text{ of } c_{j-1} < Y_i \leq c_j}{\# \text{ of } Y_i > c_{j-1}},
+                  \end{align*}
+                  which leads to the following estimator of survival probability:
+                  \begin{align*}
+                        \tilde{\P}(I_j=1) 
+                              &= \prod_{s=1}^j \tilde{\P}(I_s=1 | I_{s-1}=1) \\
+                              &= \frac{\# \text{ of } Y_i > c_j}{\# \text{ of } Y_i > c_0} = \frac{\# \text{ of } Y_i > c_j}{n} 
+                               = 1 - \hat{F}^n(c_j)
+                  \end{align*}
+                  where $\hat{F}^n(c_j) = \dfrac{\# \text{ of } Y_i \leq c_j}{n}$ is the empirical CDF
+                  \footnote{テキストでは$s=2$から計算することになっているが，このスライドでは，$c_0, \cdots$という点の取り方にconsistentな表記に統一した．}.
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Estimation: With the Presence of Censoring}
+      \begin{itemize}
+            \item Similar estimation procedures to above can be implemented:
+                  Iteration of 
+                  \begin{align*}
+                        \hat{\P}(I_j=1|I_{j-1}=1) = 1 -  \frac{\# \text{ of uncensored } c_{j-1} < Y_i \leq c_j}{\# \text{ of } Y_i > c_{j-1}}
+                  \end{align*}
+                  leads to the following estimator of survival probability:
+                  \begin{align*}
+                        \hat{S}(c_j) = \hat{\P}(I_j=1) = \prod_{s=1}^{j} \hat{\P}(I_s=1 | I_{s-1}=1).
+                  \end{align*}
+            \item The estimator of CDF is given by $\hat{F}(c_j) = 1 -  \hat{S}(c_j)$
+                  \footnote{Errataをみると，$s=2$から計算することになっているが，このスライドでは，$c_0, \cdots$という点の取り方にconsistentな表記に統一した．}.
+      \end{itemize}
+\end{frame}
 
 
+\begin{frame}{Disclaimer}
+      \begin{center}
+            以降の内容は手書きのノートで替えさせていただきます．
 
-
-
+            宿題や試験に追われスライドが間に合いませんでした．
+            
+            余裕があったら春休みの間にBeamerにします...
+      \end{center}
+\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{The Multivariate Kaplan-Meier CDF Estimator}
-
 
 
 
@@ -126,30 +468,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
-
-\begin{frame}{References}
-  \begin{itemize}
-    \item Textbooks and Lecture Notes:
-    \begin{itemize}
-      \item Horowitz, J. L. (2009)
-            \textit{Semiparametric and Nonparametric Methods in Econometrics,}
-            Springer.
-      \item Li, Q., and J. S. Racine (2007). 
-            \textit{Nonparametric Econometrics: Theory and Practice,} 
-            Princeton University Press.
-      \item Serfling, R. J. (1980)
-            \textit{Approximation Theorems of Mathematical statistics.} Wiley.
-      \item van der Vaart, A. W. (2000)
-            \textit{Asymptotic Statistics.} Cambridge.
-      \item 末石直也 (2024) 『データ駆動型回帰分析：計量経済学と機械学習の融合』日本評論社．
-      \item 西山慶彦，人見光太郎 (2023) 『ノン・セミパラメトリック統計解析（理論統計学教程：数理統計の枠組み）』共立出版．
-      \item ECON 718 NonParametric Econometrics (Bruce Hansen, Spring 2009, University of Wisconsin-Madison).
-      \item セミノンパラメトリック計量分析（末石直也，2014年度後期，京都大学）．
-    \end{itemize}
-  \end{itemize}
-\end{frame}
 
 
 
