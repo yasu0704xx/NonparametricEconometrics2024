@@ -2,7 +2,7 @@
 \AtBeginDvi{\special{pdf:tounicode 90ms-RKSJ-UCS2}} 
 \usetheme[progressbar=frametitle]{metropolis}
 \setbeamertemplate{headline}[miniframes]
-\setbeamercolor{background canvas}{bg=Snow} 
+\setbeamercolor{background canvas}{bg=White} 
 \setbeamercolor{frametitle}{fg=white, bg=gray!40!black}  
 \setbeamercolor{section in head/foot}{fg=pink!70!red, bg=gray!30!black}
 \setbeamercolor{alerted text}{fg=orange!50!red} 
@@ -196,7 +196,7 @@
             \item To estimate $f(0)$, they use data with 
                   $X_i^T \hat{\beta}_{clad} \in \left[ -\frac{h}{2}, \frac{h}{2} \right]$.
             \item Their estimator is given by 
-                  \tiny{
+                  {\tiny{
                   \begin{align*}
                         \hat{f}(0) = \frac{
                               \sum_{i=1}^n 
@@ -211,8 +211,8 @@
                               \right].
                         }
                   \end{align*}
-                  }
-            \item Hall and horowitz (1990) suggest to replace the indicator function 
+                  }}
+            \item Hall and Horowitz (1990) suggest to replace the indicator function 
                   by a kernel function.
       \end{itemize}
 \end{frame}
@@ -283,6 +283,7 @@
                         &\P(v_i \leq \lambda|X_i) \equiv \P(v_i \leq \lambda) \text{ for any } \lambda \in \R , X_i \, a.s.,\\
                         &\E(v_i)=0, \Var(v_i)=1. 
                   \end{align*}
+                  \footnote{\tiny{このように$\epsilon_i$を定めると，正規分布を許容できなくなってしまう（heteroscedasticityを守るならば）．}}
             \item Recalling that $Y_i = \max\{X_i^T\beta + \epsilon_i, 0\}$, we obtain
                   \begin{align*}
                         &\text{For any } \alpha \in (0,1),\\
@@ -325,7 +326,7 @@
 \begin{frame}
       \begin{itemize}
             \item Chen and Khan (2000)'s estimation procedures include the following steps:
-            \item \alert{1st step}: Estimate $q_{\alpha_j}(\cdot)$ nonpaeametrically. 
+            \item \alert{1st step}: Estimate $q_{\alpha_j}(\cdot)$ nonparametrically. 
                   Let $\hat{q}_{\alpha_j}(\cdot)$ denote the nonparametric estimator of $q_{\alpha_j}(\cdot)$.
             \item \alert{2nd step}: Regress $\hat{\bar{q}}_{\alpha}(\cdot)$ on $X_i$ and $\Delta \hat{q}_{\alpha}(\cdot)$.
             \item That is, the estimators of $\beta$ and $\gamma_1$ are given by minimizing (w.r.t. $\beta$ and $\gamma_1$)
